@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">DCinephila</string>
+    <string name="action_sign_in_short">Je m\'inscris</string>
+    <string name="email">Email</string>
+    <string name="minimum_password">Mot de passe trop court, entrez au moins 6 caractères</string>
+    <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
+    <string name="change_email">Change Email</string>
+    <string name="change_password">Change Password</string>
+    <string name="send_password_reset_email">Send Password reset email</string>
+    <string name="remove_user">Remove user</string>
+    <string name="new_pass">New Password</string>
+    <string name="title_activity_profile">Firebase</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Mot de passe</string>
+    <string name="hint_name">Fullname</string>
+    <string name="btn_login">Je me connecte</string>
+    <string name="btn_link_to_register">Vous êtes un nouveau membre ? Inscrivez-vous !</string>
+    <string name="btn_link_to_login">Déjà inscrit ? Je me connecte !</string>
+    <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="btn_forgot_password">Mot de passe oublié ?</string>
+    <string name="btn_reset_password">Reset Password</string>
+    <string name="btn_back"><![CDATA[<< Back]]></string>
+    <string name="hint_new_email">New Email</string>
+    <string name="btn_change">Change</string>
+    <string name="btn_send">Send</string>
+    <string name="btn_remove">Remove</string>
+    <string name="btn_sign_out">Sign Out</string>
+    <string name="lbl_forgot_password">Mot de passe oublié ?</string>
+    <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="player_error">Error initializing YouTube player: %s</string>
+    <string name="seek_to">Jump To</string>
+    <string name="seek_to_hint">Seconds</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="diagonallayout_description">Hugh Michael Jackman is an Australian actor, singer and producer. Jackman has won international recognition for playing different roles in various film genres. \n\nHe is best known for his long-running role as Wolverine in the X-Men film series, as well as for his lead roles in the romantic-comedy fantasy Kate &amp; Leopold (2001), the action-horror film Van Helsing (2004)...</string>
+
+    <string name="horizontal_timeline">Horizontal Timeline</string>
+    <string name="vertical_timeline">Vertical Timeline</string>
+    <string name="horizontal_timeline_w_padding">Horizontal Timeline With Line Padding</string>
+    <string name="vertical_timeline_w_padding">Vertical Timeline With Line Padding</string>
+    <string name="google_maps_key">AIzaSyDmbjUOn6hBPD9xqDfflgjqI9x9lxWexo8</string>
+
+    <string name="text1">The museum is housed in the Louvre Palace, originally built as a fortress in the late 12th century…</string>
+    <string name="text2">Gwanghwamun is the main and largest gate of Gyeongbokgung Palace, in Jongno-gu, Seoul, South Korea.</string>
+    <string name="text3">Tower Bridge is a combined bascule and suspension bridge in London built in 1886–1894.</string>
+    <string name="text4">The Temple of Heaven is an imperial complex of religious buildings situated in the southeastern part…</string>
+    <string name="text5">The Aegean Islands are within the sea and some bound it on its southern periphery…</string>
+    <string name="title_activity_statistics">StatisticsActivity</string>
+
+</resources>
+
