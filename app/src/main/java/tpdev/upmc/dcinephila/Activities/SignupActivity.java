@@ -1,6 +1,8 @@
 package tpdev.upmc.dcinephila.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +30,14 @@ import tpdev.upmc.dcinephila.R;
 public class SignupActivity extends AppCompatActivity {
 
     private TextView textview;
-    private EditText inputFirstname, inputLastname, inputEmail, inputPassword;
+    private EditText inputFirstname, inputLastname, inputEmail, inputPassword, inputDescription;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
+    private RadioGroup radioGroup;
     private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
+    private String gender="";
 
 
     @Override
@@ -54,8 +59,24 @@ public class SignupActivity extends AppCompatActivity {
         inputLastname = (EditText) findViewById(R.id.lastname);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
+        inputDescription = (EditText) findViewById(R.id.description);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.male :
+                            gender = "Homme";
+                        break;
+                    case R.id.female :
+                            gender="Femme";
+                        break;
+                }
+            }
+        });
 
         Typeface face= Typeface.createFromAsset(getApplicationContext().getAssets(), "font/CollegeMovie.ttf");
         textview.setTypeface(face);
@@ -76,6 +97,7 @@ public class SignupActivity extends AppCompatActivity {
                 final String lastname = inputLastname.getText().toString().trim();
                 final String email = inputEmail.getText().toString().trim();
                 final String password = inputPassword.getText().toString().trim();
+                final String description = inputDescription.getText().toString().trim();
 
                 if (TextUtils.isEmpty(lastname)) {
                     Toast.makeText(getApplicationContext(), "Saisissez votre nom !", Toast.LENGTH_SHORT).show();
@@ -97,7 +119,18 @@ public class SignupActivity extends AppCompatActivity {
                 }
 
                 if (password.length() < 6) {
-                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Mot de passe faibe!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(description)) {
+                    Toast.makeText(getApplicationContext(), "Entrer une petite description de vous :)", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (gender.equals(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Chosissez votre sexe", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -122,8 +155,11 @@ public class SignupActivity extends AppCompatActivity {
                                     String cinephileId =  mFirebaseDatabase.push().getKey();
 
                                     // creating cinephile object
-                                    Cinephile cinephile = new Cinephile(firstname,lastname,email,password);
-
+                                    Cinephile cinephile = new Cinephile(firstname,lastname,email,password, description, gender);
+                                    SharedPreferences pref = getApplicationContext().getSharedPreferences("myPref", Context.MODE_PRIVATE); // 0 - for private mode
+                                    SharedPreferences.Editor editor = pref.edit();
+                                    editor.putString("sexe", gender);
+                                    editor.commit();
                                     // pushing cinephile to 'cinephiles' node using the cinephileId
                                     mFirebaseDatabase.child(cinephileId).setValue(cinephile);
                                     startActivity(new Intent(SignupActivity.this, MainActivity.class));

@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
-       // auth.signOut();
+        auth.signOut();
 
         // this listener will be called when there is change in firebase user session
 

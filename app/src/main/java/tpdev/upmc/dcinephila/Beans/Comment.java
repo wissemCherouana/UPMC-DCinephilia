@@ -15,6 +15,7 @@ public class Comment {
     private Date comment_date;
     private String cinephile_id;
     private int element_id;
+    private String comment_thumbnail ;
 
     public Comment(){}
 
@@ -23,6 +24,14 @@ public class Comment {
         this.comment_date = comment_date;
         this.cinephile_id = cinephile_id;
         this.element_id = element_id;
+    }
+
+    public Comment(String comment_content, Date comment_date, String cinephile_id, int element_id, String comment_thumbnail) {
+        this.comment_content = comment_content;
+        this.comment_date = comment_date;
+        this.cinephile_id = cinephile_id;
+        this.element_id = element_id;
+        this.comment_thumbnail = comment_thumbnail;
     }
 
     public String getComment_content() {
@@ -57,4 +66,11 @@ public class Comment {
         this.element_id = element_id;
     }
 
+    public String getComment_thumbnail() {
+        return comment_thumbnail;
+    }
+
+    public void setComment_thumbnail(String comment_thumbnail) {
+        this.comment_thumbnail = comment_thumbnail;
+    }
 }

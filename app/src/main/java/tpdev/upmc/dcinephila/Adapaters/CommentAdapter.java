@@ -13,6 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -28,6 +30,7 @@ import tpdev.upmc.dcinephila.R;
 public class CommentAdapter extends ArrayAdapter<Comment> {
 
     final int layoutResource;
+    private Context mContext;
     private final List<Comment> commens;
 
     private static class ViewHolder {
@@ -40,6 +43,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
     public CommentAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Comment> comments) {
         super(context, resource, comments);
         layoutResource = resource;
+        mContext = context;
         this.commens = comments;
     }
 
@@ -63,6 +67,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         holder.cinephile.setText(comment.getCinephile_id());
         holder.date.setText(df.format(comment.getComment_date()));
         holder.content.setText(comment.getComment_content());
+        Glide.with(mContext).load(comment.getComment_thumbnail()).into(holder.thumbnail);
 
         return convertView;
     }
@@ -76,6 +81,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         holder.cinephile = view.findViewById(R.id.cinephile);
         holder.date = view.findViewById(R.id.date);
         holder.content = view.findViewById(R.id.content);
+        holder.thumbnail = view.findViewById(R.id.thumbnail);
 
         view.setTag(holder);
         return view;

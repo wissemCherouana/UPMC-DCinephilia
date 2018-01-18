@@ -730,9 +730,13 @@ public class MovieDetailsActivity extends YouTubeBaseActivity implements YouTube
 
                     if (cinephile.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
+                        String thumbnail = "";
+                        if (cinephile.getSexe().equals("Femme"))
+                            thumbnail = "https://icon-icons.com/icons2/582/PNG/512/girl_icon-icons.com_55043.png";
+                        else thumbnail = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/boy-512.png";
                         moviesCommentsReference = DCinephiliaInstance.getReference("movies_comments");
                         Comment comment = new Comment(comment_content,new Date(), cinephile.getFirstname() +
-                                " " + cinephile.getLastname().toUpperCase(), movie_id);
+                                " " + cinephile.getLastname().toUpperCase(), movie_id, thumbnail);
                         moviesCommentsReference.child(String.valueOf(movie_id)).push().setValue(comment);
                     }
                 }

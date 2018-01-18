@@ -12,6 +12,8 @@ public class Cinephile {
     private String lastname;
     private String email;
     private String password;
+    private String description;
+    private String sexe;
 
 
     public Cinephile() {
@@ -25,6 +27,14 @@ public class Cinephile {
         this.password = password;
     }
 
+    public Cinephile(String firstname, String lastname, String email, String password, String description, String sexe) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.description = description;
+        this.sexe = sexe;
+    }
 
     public String getFirstname() {
         return firstname;
@@ -56,5 +66,21 @@ public class Cinephile {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSexe() {
+        return sexe;
+    }
+
+    public void setSexe(String sexe) {
+        this.sexe = sexe;
     }
 }
