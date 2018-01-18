@@ -49,7 +49,7 @@
                         android:layout_gravity="top|left"
                         android:fontFamily="sans-serif-condensed"
                         android:textColor="@android:color/white"
-                        android:textSize="25dp"
+                        android:textSize="20dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -60,7 +60,7 @@
                         android:layout_marginLeft="10dp"
                         android:fontFamily="sans-serif-condensed"
                         android:textColor="@android:color/white"
-                        android:textSize="25dp"
+                        android:textSize="20dp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -102,25 +102,19 @@
                     android:layout_weight="1" />
 
                 <LinearLayout
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/diagonalLayout"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/Dcinephilia"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="2dp"
-                        android:src="@drawable/maps" />
+
 
                     <TextView
                         android:id="@+id/adress_value"
-                        android:layout_width="220dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="2dp"
-                        android:layout_weight="2"
                         android:textColor="#3E3E3E"
                         android:textSize="14sp" />
 
@@ -134,10 +128,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginTop="340dp"
-                android:text="bio :"
+                android:layout_marginTop="320dp"
+                android:gravity="center_vertical"
                 android:textColor="#444"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
 
             <View
                 android:id="@+id/divider"
@@ -159,16 +153,16 @@
                 <LinearLayout
                     android:id="@+id/event_icons"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/event"
                         android:layout_width="60dp"
-                        android:layout_height="80dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginLeft="35dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:layout_marginStart="20dp"
+                        android:layout_gravity="center_vertical"
                         android:src="@drawable/popevent" />
 
 
@@ -177,10 +171,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
-                        android:layout_marginTop="33dp"
-                        android:text=" Creer un event ! "
-                        android:fontFamily="sans-serif-light"
-                        android:textColor="#888"
+                        android:layout_gravity="center_vertical"
+                        android:text="Créer un événement"
+                        android:textColor="#444"
                         android:layout_weight="3"
                         android:textSize="18sp" />
 
@@ -197,16 +190,17 @@
                 <LinearLayout
                     android:id="@+id/lists_icons"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/event_icons"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/lists"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginLeft="45dp"
-                        android:layout_marginTop="25dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="35dp"
+                        android:layout_gravity="center_vertical"
                         android:src="@drawable/starfilled" />
 
 
@@ -214,12 +208,10 @@
                         android:id="@+id/create_lists"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="45dp"
-                        android:layout_marginTop="35dp"
-                        android:layout_marginBottom="35dp"
-                        android:text=" Mes Listes "
-                        android:fontFamily="sans-serif-light"
-                        android:textColor="#888"
+                        android:layout_marginLeft="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="  Mes Listes"
+                        android:textColor="#444"
                         android:layout_weight="3"
                         android:textSize="18sp" />
 
@@ -228,7 +220,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@id/biography"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="10dp"
                     android:background="#ddd" />
@@ -237,16 +228,17 @@
                 <LinearLayout
                     android:id="@+id/update_icons"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/event_icons"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/update"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginLeft="45dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="35dp"
+                        android:layout_gravity="center_vertical"
                         android:src="@drawable/editme" />
 
 
@@ -254,19 +246,16 @@
                         android:id="@+id/update_lists"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="33dp"
-                        android:layout_marginLeft="45dp"
-                        android:layout_marginBottom="35dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_gravity="center_vertical"
                         android:text=" Editer mon profil  "
                         android:fontFamily="sans-serif-light"
-                        android:textColor="#888"
+                        android:textColor="#444"
                         android:layout_weight="3"
                         android:textSize="18sp" />
 
                 </LinearLayout>
             </LinearLayout>
-
-            -->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/movies_recyclerview"

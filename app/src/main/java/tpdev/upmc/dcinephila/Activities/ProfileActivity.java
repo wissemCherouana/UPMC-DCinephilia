@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,15 +16,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import tpdev.upmc.dcinephila.Beans.Cinephile;
 import tpdev.upmc.dcinephila.R;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
-    private TextView firtsname_profile_text, lastname_profile_text, email_profile_text, adress_value;
+    private TextView firtsname_profile_text, lastname_profile_text, email_profile_text, adress_value, description;
     private ImageView event_view,lists_view,edit_view;
     private TextView event_text, lists_text,edit_text;
+    private CircleImageView actor_avatar;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
 
@@ -35,6 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
+        Typeface face= Typeface.createFromAsset(getApplicationContext().getAssets(), "font/Comfortaa-Light.ttf");
         Typeface face_bold = Typeface.createFromAsset(getApplicationContext().getAssets(), "font/Comfortaa-Bold.ttf");
         firtsname_profile_text = (TextView) findViewById(R.id.firstname_profile);
         lastname_profile_text = (TextView) findViewById(R.id.lastname_profile);
@@ -46,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
         lists_text =(TextView) findViewById(R.id.create_lists);
         event_text=(TextView) findViewById(R.id.create_event);
         edit_text=(TextView)findViewById(R.id.update_lists) ;
+        adress_value.setTypeface(face);
         lists_text.setTypeface(face_bold);
         event_text.setTypeface(face_bold);
         edit_text.setTypeface(face_bold);
@@ -53,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
         lastname_profile_text.setTypeface(face_bold);
         email_profile_text.setTypeface(face_bold);
         adress_value.setTypeface(face_bold);
+        actor_avatar = (CircleImageView) findViewById(R.id.avatar);
         GetUserInformations();
 
 
@@ -60,16 +66,14 @@ public class ProfileActivity extends AppCompatActivity {
         event_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // startActivity(new Intent(ProfileActivity.this, DisplayEventsActivity.class));
-                //finish();
+                startActivity(new Intent(ProfileActivity.this, CreateEventActivity.class));
             }
         });
 
         event_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // startActivity(new Intent(ProfileActivity.this, DisplayEventsActivity.class));
-                //finish();
+                 startActivity(new Intent(ProfileActivity.this, CreateEventActivity.class));
             }
         });
 
@@ -77,7 +81,6 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProfileActivity.this, DisplayListsActivity.class));
-                finish();
             }
         });
 
@@ -85,7 +88,6 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProfileActivity.this, DisplayListsActivity.class));
-                finish();
             }
         });
 
@@ -101,7 +103,6 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProfileActivity.this, UpdateProfileActivity.class));
-                finish();
             }
         });
 
@@ -109,9 +110,8 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     private void GetUserInformations() {
-        adress_value.setText("son adresse ");
+        adress_value.setText("");
         final String userRecord = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        System.out.println("current user  :  "+ FirebaseAuth.getInstance().getCurrentUser());
         mFirebaseDatabase = mFirebaseInstance.getReference("cinephiles");
         mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -121,8 +121,15 @@ public class ProfileActivity extends AppCompatActivity {
                         if(c.getValue().equals(userRecord)){
                             Cinephile cinp = child.getValue(Cinephile.class);
                             firtsname_profile_text.setText(cinp.getFirstname());
-                            lastname_profile_text.setText(cinp.getLastname());
+                            lastname_profile_text.setText(cinp.getLastname().toUpperCase());
                             email_profile_text.setText(cinp.getEmail());
+                            adress_value.setText(cinp.getDescription());
+                            String thumbnail = "";
+                            if (cinp.getSexe().equals("Femme"))
+                                thumbnail = "https://icon-icons.com/icons2/582/PNG/512/girl_icon-icons.com_55043.png";
+                            else thumbnail = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/boy-512.png";
+                            Glide.with(getApplicationContext()).load(thumbnail).into(actor_avatar);
+
                         }
                     }
                 }

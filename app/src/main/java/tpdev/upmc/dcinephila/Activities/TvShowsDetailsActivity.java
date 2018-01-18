@@ -666,9 +666,13 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
 
                     if (cinephile.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
+                        String thumbnail = "";
+                        if (cinephile.getSexe().equals("Femme"))
+                            thumbnail = "https://icon-icons.com/icons2/582/PNG/512/girl_icon-icons.com_55043.png";
+                        else thumbnail = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/boy-512.png";
                         showsCommentsReference = DCinephiliaInstance.getReference("shows_comments");
                         Comment comment = new Comment(comment_content,new Date(), cinephile.getFirstname() +
-                                " " + cinephile.getLastname().toUpperCase()  , show_id);
+                                " " + cinephile.getLastname().toUpperCase(), show_id, thumbnail);
                         showsCommentsReference.child(String.valueOf(show_id)).push().setValue(comment);
                     }
                 }

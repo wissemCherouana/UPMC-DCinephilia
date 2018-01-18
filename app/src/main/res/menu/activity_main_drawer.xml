@@ -13,7 +13,7 @@
 
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/calendar"
+            android:icon="@drawable/calendar2"
             android:title="Evénements" />
         <item
             android:id="@+id/nav_manage"
