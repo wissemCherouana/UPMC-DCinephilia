@@ -1,10 +1,12 @@
 package tpdev.upmc.dcinephila.Adapaters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,11 +77,7 @@ public class ListsAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View view) {
                 String title = myLists.get(position).toString();
-                myLists.remove(position);
-                removeList(title);
-                myLists.clear();
-                System.out.println(title);
-                notifyDataSetChanged();
+                removeList(title,position);
             }
         });
         return convertView;
@@ -99,20 +97,37 @@ public class ListsAdapter extends ArrayAdapter<String> {
     }
 
 
-    private void removeList(final String t) {
-        DatabaseReference mFirebaseDatabase;
-        FirebaseDatabase mFirebaseInstance=null;
-        mFirebaseDatabase = mFirebaseInstance.getInstance().getReference("lists_cinephile/"+t);
-        mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                snapshot.getRef().removeValue();
-            }
+    private void removeList(final String t, final int position) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+        AlertDialog.Builder adb=new AlertDialog.Builder(getContext());
+        adb.setTitle("Supprimer ? ");
+        adb.setMessage("Etes vous sûr de bien vouloir supprimer cette liste");
+        adb.setNegativeButton("Cancel", null);
+        adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                final int positionToRemove = position;
+                DatabaseReference mFirebaseDatabase;
+                FirebaseDatabase mFirebaseInstance=null;
+                mFirebaseDatabase = mFirebaseInstance.getInstance().getReference("lists_cinephile/"+t);
+                mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        snapshot.getRef().removeValue();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+                myLists.remove(position);
+                myLists.clear();
+                notifyDataSetChanged();
+
+            }});
+        adb.show();
+
+
 
     }
 
