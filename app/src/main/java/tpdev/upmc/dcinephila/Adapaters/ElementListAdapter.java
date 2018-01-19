@@ -2,6 +2,7 @@ package tpdev.upmc.dcinephila.Adapaters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -64,17 +65,17 @@ public class ElementListAdapter extends ArrayAdapter<ElementList> {
             convertView = createView();
             notifyDataSetChanged();
         }
-
+        Typeface face= Typeface.createFromAsset(context.getAssets(), "font/Comfortaa-Light.ttf");
+        Typeface face_bold= Typeface.createFromAsset(context.getAssets(), "font/Comfortaa-Bold.ttf");
         ElementListAdapter.ViewHolder holder = (ElementListAdapter.ViewHolder) convertView.getTag();
-        final ElementList todo = getItem(position);
-        System.out.println(" l'element reçu "+ todo.toString());
-        holder.textView.setText(todo.getName());
-        if(todo.getType().equals("movie")){
-            holder.date.setText("Sortie le : "+ todo.getDate());
+        holder.textView.setTypeface(face_bold);
+        holder.date.setTypeface(face);
+        final ElementList element = getItem(position);
+        holder.textView.setText(element.getName());
+        if(element.getType().equals("movie")){
+            holder.date.setText("Sorti le : "+ element.getDate());
         }
-        Glide.
-
-                with(getContext()).load(todo.getUrl()).into(holder.image);
+        Glide.with(getContext()).load(element.getUrl()).into(holder.image);
 
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +129,6 @@ public class ElementListAdapter extends ArrayAdapter<ElementList> {
 
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
