@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import tpdev.upmc.dcinephila.Beans.Cinephile;
 import tpdev.upmc.dcinephila.R;
 
@@ -23,11 +25,11 @@ import tpdev.upmc.dcinephila.R;
  */
 
 public class ConsultOtherProfileActivity extends AppCompatActivity{
-    private FirebaseAuth auth;
-    private TextView firstname_other_profile, lastname_other_profile, email_other_profile;
-    private ImageView lists_other,like_other,chat;
-    private TextView lists_other_profile, like_other_profile,chat_profile;
+    private TextView firstname_other_profile, lastname_other_profile, email_other_profile, adress_value;
+    private ImageView lists_other,like_other ;
+    private TextView lists_other_profile, like_other_profile;
     private String emailOtherUser;
+    private CircleImageView actor_avatar;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
 
@@ -36,7 +38,6 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
         setContentView(R.layout.activity_other_profile);
         Bundle i = getIntent().getExtras();
         emailOtherUser=i.getString("consultProfile");
-        auth = FirebaseAuth.getInstance();
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
         Typeface face_bold = Typeface.createFromAsset(getApplicationContext().getAssets(), "font/Comfortaa-Bold.ttf");
@@ -45,16 +46,16 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
         email_other_profile = (TextView) findViewById(R.id.email_other_profile);
         lists_other=(ImageView)findViewById(R.id.lists_other);
         like_other=(ImageView)findViewById(R.id.like_other);
-        chat=(ImageView) findViewById(R.id.chat);
         lists_other_profile =(TextView) findViewById(R.id.lists_other_profile);
         like_other_profile=(TextView) findViewById(R.id.like_other_profile);
-        chat_profile=(TextView)findViewById(R.id.chat_profile) ;
+        adress_value = (TextView) findViewById(R.id.adress_value);
         lists_other_profile.setTypeface(face_bold);
         like_other_profile.setTypeface(face_bold);
-        chat_profile.setTypeface(face_bold);
         firstname_other_profile.setTypeface(face_bold);
         lastname_other_profile.setTypeface(face_bold);
         email_other_profile.setTypeface(face_bold);
+        adress_value.setTypeface(face_bold);
+        actor_avatar = (CircleImageView) findViewById(R.id.avatar);
         GetUserInformations();
 
 
@@ -63,8 +64,6 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                  startActivity(new Intent(ConsultOtherProfileActivity.this, DisplayListsOtherUserActivity.class).putExtra("emailOtherUser",emailOtherUser));
-                System.out.println(" le mail ds cnsult "+emailOtherUser);
-                finish();
             }
         });
 
@@ -72,8 +71,6 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                  startActivity(new Intent(ConsultOtherProfileActivity.this, DisplayListsOtherUserActivity.class).putExtra("emailOtherUser",emailOtherUser));
-                 System.out.println(" le mail ds cnsult "+emailOtherUser);
-                finish();
             }
         });
 
@@ -81,7 +78,6 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ConsultOtherProfileActivity.this, DisplayLikeOtherUserActivity.class).putExtra("emailOtherUser",emailOtherUser));
-                finish();
             }
         });
 
@@ -89,25 +85,9 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ConsultOtherProfileActivity.this, DisplayLikeOtherUserActivity.class).putExtra("emailOtherUser",emailOtherUser));
-                finish();
             }
         });
 
-        chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ConsultOtherProfileActivity.this, DisplayListsOtherUserActivity.class).putExtra("emailOtherUser",emailOtherUser));
-                finish();
-            }
-        });
-
-        chat_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ConsultOtherProfileActivity.this, DisplayListsOtherUserActivity.class).putExtra("emailOtherUser",emailOtherUser));
-                finish();
-            }
-        });
 
     }
 
@@ -122,8 +102,15 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
                         if(c.getValue().equals(emailOtherUser)){
                             Cinephile cinp = child.getValue(Cinephile.class);
                             firstname_other_profile.setText(cinp.getFirstname());
-                            lastname_other_profile.setText(cinp.getLastname());
+                            lastname_other_profile.setText(cinp.getLastname().toUpperCase());
                             email_other_profile.setText(cinp.getEmail());
+                            adress_value.setText(cinp.getDescription());
+                            String thumbnail = "";
+                            if (cinp.getSexe().equals("Femme"))
+                                thumbnail = "https://icon-icons.com/icons2/582/PNG/512/girl_icon-icons.com_55043.png";
+                            else thumbnail = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/boy-512.png";
+                            Glide.with(getApplicationContext()).load(thumbnail).into(actor_avatar);
+
                         }
                     }
                 }

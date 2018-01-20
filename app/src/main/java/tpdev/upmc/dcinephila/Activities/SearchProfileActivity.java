@@ -94,7 +94,8 @@ public class SearchProfileActivity extends AppCompatActivity
                             if(cinp.getFirstname().toLowerCase().contains(text.getText().toString().toLowerCase())
                               || cinp.getLastname().toLowerCase().contains(text.getText().toString().toLowerCase())
                               || cinp.getEmail().toLowerCase().contains(text.getText().toString().toLowerCase())){
-                               adapter.add(cinp.getFirstname() + " " + cinp.getLastname().toUpperCase());
+                               myLists.add(cinp.getEmail());
+                               adapter.notifyDataSetChanged();
 
                     }
                 }
