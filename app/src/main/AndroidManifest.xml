@@ -35,7 +35,6 @@
         <activity android:name=".Activities.TvShowsDetailsActivity" />
         <activity android:name=".Activities.SeasonEpisodesActivity" />
         <activity android:name=".Activities.DisplayElementCommentsActivity" />
-        <activity android:name=".Activities.CinephileProfileActivity" />
         <activity android:name=".Activities.EventsActivity" />
         <activity android:name=".Activities.CreateEventActivity" />
         <activity android:name=".Activities.CinemasActivity" />
@@ -61,10 +60,7 @@
             android:name=".Activities.StatisticsActivity"
             android:label="@string/title_activity_statistics"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Activities.Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".Activities.ResetPasswordActivity"></activity>
     </application>
 
 </manifest>
