@@ -35,6 +35,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,12 +55,13 @@ public class CinemasActivity extends AppCompatActivity
     private static final int TAG_CODE_PERMISSION_LOCATION = 1;
     private ArrayList<GeographicalPosition> cinemasCordinatesList;
     private GoogleMap mMap;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cinemas);
-
+        auth = FirebaseAuth.getInstance();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -192,8 +194,13 @@ public class CinemasActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(CinemasActivity.this, CinemasActivity.class);
+            Intent intent = new Intent(CinemasActivity.this, ProfileActivity.class);
             startActivity(intent);
+        }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(CinemasActivity.this, LoginActivity.class));
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -206,17 +213,32 @@ public class CinemasActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent = new Intent(CinemasActivity.this, CinemasActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(CinemasActivity.this, SeancesMoviesActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(CinemasActivity.this, EventsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(CinemasActivity.this, StatisticsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(CinemasActivity.this, ProfileActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(CinemasActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(CinemasActivity.this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -228,7 +250,6 @@ public class CinemasActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 }

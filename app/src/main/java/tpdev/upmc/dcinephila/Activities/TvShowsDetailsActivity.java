@@ -13,10 +13,13 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +52,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import me.gujun.android.taggroup.TagGroup;
 import tpdev.upmc.dcinephila.APIs.ThemoviedbApiAccess;
@@ -60,7 +64,9 @@ import tpdev.upmc.dcinephila.Adapaters.TvShowsAdapter;
 import tpdev.upmc.dcinephila.Beans.Actor;
 import tpdev.upmc.dcinephila.Beans.Cinephile;
 import tpdev.upmc.dcinephila.Beans.Comment;
+import tpdev.upmc.dcinephila.Beans.ElementList;
 import tpdev.upmc.dcinephila.Beans.Like;
+import tpdev.upmc.dcinephila.Beans.ListCinephile;
 import tpdev.upmc.dcinephila.Beans.Rate;
 import tpdev.upmc.dcinephila.Beans.Season;
 import tpdev.upmc.dcinephila.Beans.TVshow;
@@ -78,6 +84,7 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
     private int comments_value = 0;
     private boolean show_liked_before = false, show_rated_before = false;
     private float my_rate=0;
+    private Spinner my_spinner;
     private ImageButton likeBtn, rateBtn, addListBtn, add_comment_btn;
     private RatingBar ratingBar;
     private ImageView show_poster;
@@ -99,6 +106,17 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
     private ListView comments_listview ;
     private ArrayList<Comment> comments_list;
     private CommentAdapter commentAdapter;
+    final String userRecord = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+    final String userUid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private List<String> list;
+    private String spinner_text;
+    private String url_show;
+    private String first_air_date="";
+    private String show;
+    private View DialogView;
+    private ArrayAdapter<String> dataAdapter;
+    private DatabaseReference mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseInstance;
 
 
     @Override
@@ -299,7 +317,7 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
             rateBtn.setImageResource(R.drawable.star2);
             rateBtn.setPadding(Math.round(px),Math.round(px),Math.round(px),Math.round(px));
             rateBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            rate_text.setText("Je note");
+            rate_text.setText("");
         }
 
         rateBtn.setOnClickListener(new View.OnClickListener() {
@@ -359,6 +377,29 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
                 addListBtn.setImageResource(R.drawable.like_blue);
                 addListBtn.setPadding(Math.round(px),Math.round(px),Math.round(px),Math.round(px));
                 addListBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                LayoutInflater li = LayoutInflater.from(TvShowsDetailsActivity.this);
+                DialogView = li.inflate(R.layout.addlist_dialog, null);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        TvShowsDetailsActivity.this);
+                alertDialogBuilder.setView(DialogView);
+                addNewSpinnerItem();
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        spinner_text= my_spinner.getSelectedItem().toString();
+                                        addElementList(show_id,spinner_text);
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
@@ -401,8 +442,9 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
                 Log.d(TAG, response.toString());
 
                 try {
+                    show = response.getString("name");
                     show_title.setText(response.getString("name"));
-                    String first_air_date="";
+                    first_air_date="";
                     try {
                         if (response.getString("first_air_date")!=null)
                             first_air_date = response.getString("first_air_date");
@@ -418,6 +460,7 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
                     ratingBar.setRating(Float.valueOf(response.getString("vote_average")));
 
                     show_overview.setText(response.getString("overview"));
+                    url_show="https://image.tmdb.org/t/p/w500" + response.getString("poster_path");
                     Glide.with(getApplicationContext()).load("https://image.tmdb.org/t/p/w500" + response.getString("poster_path")).into(show_poster);
 
                     // Getting show genres
@@ -728,9 +771,6 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
         });
     }
 
-
-
-
     public void LikeTvShow(final String element_genre, final int element_id)
     {
         cinephilesReference = DCinephiliaInstance.getReference("cinephiles");
@@ -748,7 +788,8 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
                     if (cinephile.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
                         likedElementsReference = DCinephiliaInstance.getReference(element_genre);
-                        Like like = new Like(cinephile.getEmail(), element_id);
+                        Like like = new Like(cinephile.getEmail(), element_id,
+                                show_title.getText().toString(), url_show, first_air_date);
                         likedElementsReference.child(String.valueOf(element_id)).push().setValue(like);
                     }
                 }
@@ -775,7 +816,7 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
                     if (cinephile.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
                         ratedTvShowsReference = DCinephiliaInstance.getReference(element_genre);
-                        Rate rating  = new Rate(cinephile.getEmail(), element_id, my_rate);
+                        Rate rating  = new Rate(cinephile.getEmail(), element_id, my_rate, show, url_show);
                         ratedTvShowsReference.child(String.valueOf(element_id)).push().setValue(rating);
                     }
                 }
@@ -844,7 +885,7 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
                             rateBtn.setImageResource(R.drawable.star_blue);
                             rateBtn.setPadding(Math.round(px),Math.round(px),Math.round(px),Math.round(px));
                             rateBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                            rate_text.setText(String.valueOf(rate.getRating_value()));
+                            rate_text.setText(String.valueOf(rate.getRating_value())+"/10");
                             break;
                         }
                     }
@@ -937,5 +978,57 @@ public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTu
 
     protected YouTubePlayer.Provider getYouTubePlayerProvider() {
         return youTubeView;
+    }
+
+    protected void addNewSpinnerItem() {
+        list = new ArrayList<String>();
+        mFirebaseDatabase = mFirebaseInstance.getInstance().getReference("lists_cinephile");
+        mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    for (DataSnapshot c : child.getChildren()) {
+                        if (c.getValue().equals(userRecord)) {
+                            ListCinephile cinp = child.getValue(ListCinephile.class);
+                            list.add(cinp.getTitle());
+                            dataAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        my_spinner = (Spinner) DialogView.findViewById(R.id.spinner2);
+        dataAdapter = new ArrayAdapter<String>(TvShowsDetailsActivity.this,
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        my_spinner.setAdapter(dataAdapter);
+        my_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+
+                String item = String.valueOf(adapterView.getItemAtPosition(position));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // TODO Auto-generated method stub)
+
+            }
+        });
+    }
+
+
+    public void addElementList(final int movie_id, final String spinner_text){
+        mFirebaseDatabase = mFirebaseInstance.getInstance().getReference("elements_lists");
+        ElementList element_list = new ElementList(String.valueOf(movie_id),"shows",url_show,show,first_air_date,spinner_text,userRecord);
+        mFirebaseDatabase.child(userUid).push().setValue(element_list);
+
     }
 }

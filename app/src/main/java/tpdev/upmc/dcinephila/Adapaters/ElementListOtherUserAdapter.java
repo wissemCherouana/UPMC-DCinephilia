@@ -39,6 +39,7 @@ public class ElementListOtherUserAdapter extends ArrayAdapter<ElementList> {
     private static class ViewHolder {
         TextView textView;
         TextView date;
+        TextView genre;
         ImageView image;
     }
 
@@ -60,14 +61,18 @@ public class ElementListOtherUserAdapter extends ArrayAdapter<ElementList> {
         }
 
         ElementListOtherUserAdapter.ViewHolder holder = (ElementListOtherUserAdapter.ViewHolder) convertView.getTag();
-        final ElementList todo = getItem(position);
-        holder.textView.setText(todo.getName());
-        if(todo.getType().equals("movie")){
-            holder.date.setText("Sortie le : "+ todo.getDate());
+        final ElementList element = getItem(position);
+        holder.textView.setText(element.getName());
+        if(element.getType().equals("movie")){
+            holder.date.setText("Sorti le : "+ element.getDate());
+            holder.genre.setText("Film");
         }
-        Glide.
-
-                with(getContext()).load(todo.getUrl()).into(holder.image);
+        else if (element.getType().equals("shows"))
+        {
+            holder.date.setText("1ère diffusion : "+ element.getDate());
+            holder.genre.setText("Série TV");
+        }
+        Glide.with(getContext()).load(element.getUrl()).into(holder.image);
 
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +96,7 @@ public class ElementListOtherUserAdapter extends ArrayAdapter<ElementList> {
         holder.textView = view.findViewById(R.id.movie_title);
         holder.date=view.findViewById(R.id.date_of);
         holder.image=view.findViewById(R.id.poster);
+        holder.genre = view.findViewById(R.id.genre);
         view.setTag(holder);
         return view;
     }

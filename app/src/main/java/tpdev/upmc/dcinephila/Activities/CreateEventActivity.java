@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,12 +48,13 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
     private Button create_event_btn;
     private DatabaseReference seancesMoviesReference, eventsReference, cinephilesReference;
     private FirebaseDatabase DCinephiliaInstance;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
-
+        auth = FirebaseAuth.getInstance();
         Typeface face = Typeface.createFromAsset(getApplicationContext().getAssets(), "font/Comfortaa-Light.ttf");
         Typeface face_bold = Typeface.createFromAsset(getApplicationContext().getAssets(), "font/Comfortaa-Bold.ttf");
 
@@ -89,6 +91,10 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
             @Override
             public void onClick(View view) {
                 CreateEvent();
+                Toast.makeText(getApplicationContext(), "Evénement créé avec succès!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CreateEventActivity.this, EventsActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -126,10 +132,10 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
                         final ArrayList<String> seances_list = new ArrayList<String>();
                         for(int i=0; i<seances.size();i++)
                         {
-                           if (seances.get(i).getMovie().equals(chosen_movie))
-                           {
-                               seances_list.add(seances.get(i).getSeance_date());
-                           }
+                            if (seances.get(i).getMovie().equals(chosen_movie))
+                            {
+                                seances_list.add(seances.get(i).getSeance_date());
+                            }
                         }
 
                         ArrayAdapter<String> seancesAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.spinner_item, seances_list);
@@ -143,7 +149,7 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
                                 for(int i=0; i<seances.size();i++)
                                 {
                                     if (seances.get(i).getMovie().equals(chosen_movie) &&
-                                        seances.get(i).getSeance_date().equals(chosen_seance))
+                                            seances.get(i).getSeance_date().equals(chosen_seance))
                                     {
                                         places_list.add(seances.get(i).getSeance_place());
                                     }
@@ -158,8 +164,8 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
                                         for(int i=0; i<seances.size();i++)
                                         {
                                             if (seances.get(i).getMovie().equals(chosen_movie) &&
-                                                seances.get(i).getSeance_date().equals(chosen_seance) &&
-                                                seances.get(i).getSeance_place().equals(chosen_place))
+                                                    seances.get(i).getSeance_date().equals(chosen_seance) &&
+                                                    seances.get(i).getSeance_place().equals(chosen_place))
                                             {
                                                 selected_seance = seances.get(i);
                                                 break;
@@ -266,8 +272,13 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(CreateEventActivity.this, CinemasActivity.class);
+            Intent intent = new Intent(CreateEventActivity.this, ProfileActivity.class);
             startActivity(intent);
+        }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(CreateEventActivity.this, LoginActivity.class));
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -280,17 +291,32 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent = new Intent(CreateEventActivity.this, CinemasActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(CreateEventActivity.this, SeancesMoviesActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(CreateEventActivity.this, EventsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(CreateEventActivity.this, StatisticsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(CreateEventActivity.this, ProfileActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(CreateEventActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(CreateEventActivity.this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

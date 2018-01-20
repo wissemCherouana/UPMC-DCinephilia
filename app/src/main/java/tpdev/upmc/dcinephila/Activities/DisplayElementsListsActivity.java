@@ -39,6 +39,7 @@ public class DisplayElementsListsActivity extends AppCompatActivity implements N
     private List<ElementList> myLists;
     private String title;
     private TextView content_list;
+    private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private final String userRecord = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -61,10 +62,9 @@ public class DisplayElementsListsActivity extends AppCompatActivity implements N
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Get Firebase database instance
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
-        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
         ListView listView = (ListView)findViewById(R.id.listView);
         myLists = new ArrayList<ElementList>();
         HashSet<ElementList> hashSet = new HashSet<ElementList>();
@@ -97,9 +97,9 @@ public class DisplayElementsListsActivity extends AppCompatActivity implements N
                 for (DataSnapshot child : snapshot.getChildren()) {
                         ElementList element = child.getValue(ElementList.class);
                         if(element.getId_list().equals(title)){
-                        adapter.add(element);
+                            adapter.add(element);
+                            adapter.notifyDataSetChanged();
                         }
-
                 }
             }
 
@@ -132,6 +132,11 @@ public class DisplayElementsListsActivity extends AppCompatActivity implements N
             Intent intent = new Intent(DisplayElementsListsActivity.this, ProfileActivity.class);
             startActivity(intent);
         }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(DisplayElementsListsActivity.this, LoginActivity.class));
+            finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -158,11 +163,17 @@ public class DisplayElementsListsActivity extends AppCompatActivity implements N
             startActivity(intent);
 
         } else if (id == R.id.nav_share) {
-            Intent intent = new Intent(DisplayElementsListsActivity.this, SearchProfileActivity.class);
+            Intent intent = new Intent(DisplayElementsListsActivity.this, ProfileActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(DisplayElementsListsActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(DisplayElementsListsActivity.this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

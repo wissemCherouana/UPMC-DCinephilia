@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
@@ -17,28 +18,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context="tpdev.upmc.dcinephila.Activities.DisplayListsOtherUserActivity">
+    tools:context="tpdev.upmc.dcinephila.Activities.DisplayElementsListsActivity">
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="100dp"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="?attr/actionBarSize">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#444"
-                android:layout_marginTop="?attr/actionBarSize"/>
+                android:background="#444"/>
+
             <ImageView
-                android:id="@+id/favoris"
+                android:id="@+id/create_list"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:paddingBottom="10dp"
+                android:layout_height="100dp"
                 android:scaleType="fitEnd"
-                android:layout_gravity="center_vertical"
-                android:background="@color/colorPrimary"
-                android:src="@drawable/favorites"
-                android:layout_weight="1" />
+                android:src="@drawable/films_rated" />
+
         </LinearLayout>
 
         <ListView
@@ -46,8 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"></ListView>
-    </LinearLayout>
 
+
+    </LinearLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

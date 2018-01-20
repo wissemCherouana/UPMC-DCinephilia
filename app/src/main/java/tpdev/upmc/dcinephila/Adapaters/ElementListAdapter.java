@@ -44,6 +44,7 @@ public class ElementListAdapter extends ArrayAdapter<ElementList> {
 
     private static class ViewHolder {
         TextView textView;
+        TextView genre;
         TextView date;
         ImageView trash;
         ImageView image;
@@ -70,10 +71,18 @@ public class ElementListAdapter extends ArrayAdapter<ElementList> {
         ElementListAdapter.ViewHolder holder = (ElementListAdapter.ViewHolder) convertView.getTag();
         holder.textView.setTypeface(face_bold);
         holder.date.setTypeface(face);
+        holder.genre.setTypeface(face);
         final ElementList element = getItem(position);
         holder.textView.setText(element.getName());
+
         if(element.getType().equals("movie")){
             holder.date.setText("Sorti le : "+ element.getDate());
+            holder.genre.setText("Film");
+        }
+        else if (element.getType().equals("shows"))
+        {
+            holder.date.setText("1ère diffusion : "+ element.getDate());
+            holder.genre.setText("Série TV");
         }
         Glide.with(getContext()).load(element.getUrl()).into(holder.image);
 
@@ -87,16 +96,6 @@ public class ElementListAdapter extends ArrayAdapter<ElementList> {
             }
         });
 
-       /* holder.trash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ElementList element = myLists.get(position);
-                myLists.remove(position);
-                myLists.clear();
-                removeList(element.getName());
-                notifyDataSetChanged();
-            }
-        });*/
 
         return convertView;
     }
@@ -106,11 +105,14 @@ public class ElementListAdapter extends ArrayAdapter<ElementList> {
         // Create item
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(layoutResource, null);
+
         ElementListAdapter.ViewHolder holder = new ElementListAdapter.ViewHolder();
         holder.textView = view.findViewById(R.id.movie_title);
         holder.date=view.findViewById(R.id.date_of);
-       // holder.trash=view.findViewById(R.id.deleteBtn);
+        holder.genre = view.findViewById(R.id.genre);
         holder.image=view.findViewById(R.id.poster);
+
+        // holder.trash=view.findViewById(R.id.deleteBtn);
         view.setTag(holder);
         return view;
     }

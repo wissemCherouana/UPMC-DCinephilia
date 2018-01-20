@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +82,7 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
             Color.rgb(41, 163, 163), Color.rgb(148, 184, 184), Color.rgb(204, 153, 102),
             Color.rgb(209, 97, 37)
     };
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +103,7 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
         navigationView.setNavigationItemSelectedListener(this);
 
         Typeface face= Typeface.createFromAsset(this.getAssets(), "font/Comfortaa-Bold.ttf");
-
+        auth = FirebaseAuth.getInstance();
         moviesLikedByCinephile = new ArrayList<>();
         comments = new ArrayList<>();
         rates_cinephile = new ArrayList<>();
@@ -150,7 +152,21 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
         text2.setTypeface(face);
 
         likes = (Button) findViewById(R.id.likes);
+        likes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(StatisticsActivity.this, DisplayLikesActivity.class);
+                startActivity(intent);
+            }
+        });
         rates = (Button) findViewById(R.id.rates);
+        rates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(StatisticsActivity.this, DisplayRatesActivity.class);
+                startActivity(intent);
+            }
+        });
         commentaires = (Button) findViewById(R.id.comments);
 
         entries = new ArrayList<>();
@@ -172,15 +188,15 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     {
-                      for (DataSnapshot snapshot : singleSnapshot.getChildren())
-                      {
-                          Like like = snapshot.getValue(Like.class);
+                        for (DataSnapshot snapshot : singleSnapshot.getChildren())
+                        {
+                            Like like = snapshot.getValue(Like.class);
 
-                          if (like.getCinephile().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
-                          {
+                            if (like.getCinephile().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
+                            {
                                 moviesLikedByCinephile.add(like.getElement_id());
-                          }
-                      }
+                            }
+                        }
                     }
                 }
 
@@ -229,7 +245,7 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
                                             entries.add(new Entry((float)val,i));
                                             labels.add(pair.getKey().toString());
                                         }
-                                     i++;
+                                        i++;
                                     }
                                     PieDataSet dataset = new PieDataSet(entries, "");
                                     dataset.setColors(JOYFUL_COLORS);
@@ -318,7 +334,7 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
 
                     if (cinephile.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
-                       cinephile_id = cinephile;
+                        cinephile_id = cinephile;
                     }
                 }
             }
@@ -333,86 +349,87 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren())
+                {
+                    for (DataSnapshot snapshot : singleSnapshot.getChildren()) {
+                        Comment comment = snapshot.getValue(Comment.class);
+                        comments.add(comment);
+                    }
+                }
+                commentaires.setText(comments.size() + " comments");
+
+                for (int i=0; i<comments.size();i++)
+                {
+                    count_comments++;
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(comments.get(i).getComment_date());
+                    int month = cal.get(Calendar.MONTH);
+                    month++;
+
+                    if (comments.get(i).getCinephile_id().equals(cinephile_id.getFirstname() +
+                            " " + cinephile_id.getLastname().toUpperCase()))
                     {
-                        for (DataSnapshot snapshot : singleSnapshot.getChildren()) {
-                            Comment comment = snapshot.getValue(Comment.class);
-                            comments.add(comment);
-                        }
-                    }
-                    commentaires.setText(comments.size() + " comments");
-
-                        for (int i=0; i<comments.size();i++)
-                        {
-                            count_comments++;
-                            Calendar cal = Calendar.getInstance();
-                            cal.setTime(comments.get(i).getComment_date());
-                            int month = cal.get(Calendar.MONTH);
-                            month++;
-
-                            if (comments.get(i).getCinephile_id().equals(cinephile_id.getFirstname() +
-                                    " " + cinephile_id.getLastname().toUpperCase()))
+                        boolean found = false;
+                        Iterator it = comments_map.entrySet().iterator();
+                        while (!found && it.hasNext()) {
+                            Map.Entry pair = (Map.Entry)it.next();
+                            int val = (int) pair.getValue();
+                            if (pair.getKey().equals(month))
                             {
-                                boolean found = false;
-                                Iterator it = comments_map.entrySet().iterator();
-                                while (!found && it.hasNext()) {
-                                    Map.Entry pair = (Map.Entry)it.next();
-                                    int val = (int) pair.getValue();
-                                    if (pair.getKey().equals(month))
-                                    {
-                                        val++;
-                                        comments_map.put(month, val);
-                                        found = true;
-                                    }
-                                }
-                            }
-
-                            if (count_comments == comments.size())
-                            {
-                                ArrayList<String> xVals = new ArrayList<String>();
-                                xVals.add("Janvier");
-                                xVals.add("Février");
-                                xVals.add("Mars");
-                                xVals.add("Avril");
-                                xVals.add("Mai");
-                                xVals.add("Juin");
-                                xVals.add("Juillet");
-                                xVals.add("Août");
-                                xVals.add("Septembre");
-                                xVals.add("Octobre");
-                                xVals.add("Novembre");
-                                xVals.add("Decembre");
-                                ArrayList<Entry> vals1 = new ArrayList<Entry>();
-                                List sortedKeys=new ArrayList(comments_map.keySet());
-                                Collections.sort(sortedKeys);
-                                Iterator it = comments_map.entrySet().iterator();
-                                int j=0;
-                                while (it.hasNext()) {
-                                    Map.Entry pair = (Map.Entry)it.next();
-                                    int key = (int) pair.getKey();
-                                    key--;
-                                    int val = (int) pair.getValue();
-                                    vals1.add(new Entry((int)val, key));
-                                }
-                                LineDataSet set1 = new LineDataSet(vals1, "#Commentaires par mois");
-                                set1.setLineWidth(1.8f);
-                                set1.setCircleRadius(4f);
-                                set1.setCircleColor(Color.rgb(198, 83, 198));
-                                set1.setColor(Color.rgb(198, 83, 198));
-                                set1.setFillColor(Color.rgb(198, 83, 198));
-
-                                LineData data = new LineData(xVals, set1);
-                                lineChart.setDescription("");
-                                lineChart.setData(data);
-                                lineChart.invalidate();
+                                val++;
+                                comments_map.put(month, val);
+                                found = true;
                             }
                         }
                     }
+
+                    if (count_comments == comments.size())
+                    {
+                        ArrayList<String> xVals = new ArrayList<String>();
+                        xVals.add("Janvier");
+                        xVals.add("Février");
+                        xVals.add("Mars");
+                        xVals.add("Avril");
+                        xVals.add("Mai");
+                        xVals.add("Juin");
+                        xVals.add("Juillet");
+                        xVals.add("Août");
+                        xVals.add("Septembre");
+                        xVals.add("Octobre");
+                        xVals.add("Novembre");
+                        xVals.add("Decembre");
+                        ArrayList<Entry> vals1 = new ArrayList<Entry>();
+                        List sortedKeys=new ArrayList(comments_map.keySet());
+                        Collections.sort(sortedKeys);
+                        Iterator it = comments_map.entrySet().iterator();
+                        int j=0;
+                        while (it.hasNext()) {
+                            Map.Entry pair = (Map.Entry)it.next();
+                            int key = (int) pair.getKey();
+                            key--;
+                            int val = (int) pair.getValue();
+                            vals1.add(new Entry((int)val, key));
+                        }
+                        LineDataSet set1 = new LineDataSet(vals1, "#Commentaires par mois");
+                        set1.setLineWidth(1.8f);
+                        set1.setCircleRadius(4f);
+                        set1.setCircleColor(Color.rgb(198, 83, 198));
+                        set1.setColor(Color.rgb(198, 83, 198));
+                        set1.setFillColor(Color.rgb(198, 83, 198));
+
+                        LineData data = new LineData(xVals, set1);
+                        lineChart.setDescription("");
+                        lineChart.setData(data);
+                        lineChart.invalidate();
+                    }
+                }
+            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {
@@ -435,8 +452,13 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(StatisticsActivity.this, CinemasActivity.class);
+            Intent intent = new Intent(StatisticsActivity.this, ProfileActivity.class);
             startActivity(intent);
+        }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(StatisticsActivity.this, LoginActivity.class));
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -449,17 +471,32 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent = new Intent(StatisticsActivity.this, CinemasActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(StatisticsActivity.this, SeancesMoviesActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(StatisticsActivity.this, EventsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(StatisticsActivity.this, StatisticsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(StatisticsActivity.this, ProfileActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(StatisticsActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(StatisticsActivity.this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -471,9 +508,7 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
-
 
 }

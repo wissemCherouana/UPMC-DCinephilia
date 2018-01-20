@@ -276,7 +276,7 @@ public class MovieDetailsActivity extends YouTubeBaseActivity implements YouTube
             rateBtn.setImageResource(R.drawable.star2);
             rateBtn.setPadding(Math.round(px),Math.round(px),Math.round(px),Math.round(px));
             rateBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            rate_text.setText("Je note");
+            rate_text.setText("");
         }
 
         rateBtn.setOnClickListener(new View.OnClickListener() {
@@ -312,7 +312,7 @@ public class MovieDetailsActivity extends YouTubeBaseActivity implements YouTube
                                         rateBtn.setImageResource(R.drawable.star_blue);
                                         rateBtn.setPadding(Math.round(px),Math.round(px),Math.round(px),Math.round(px));
                                         rateBtn.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                                        rate_text.setText(String.valueOf(my_rate));
+                                        rate_text.setText(String.valueOf(my_rate)+"/10");
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -810,7 +810,8 @@ public class MovieDetailsActivity extends YouTubeBaseActivity implements YouTube
                     if (cinephile.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
                         likedElementsReference = DCinephiliaInstance.getReference(element_genre);
-                        Like like = new Like(cinephile.getEmail(), element_id);
+                        Like like = new Like(cinephile.getEmail(), element_id,
+                                movie_title.getText().toString(), url_movie, release_date);
                         likedElementsReference.child(String.valueOf(element_id)).push().setValue(like);
                     }
                 }
@@ -838,7 +839,7 @@ public class MovieDetailsActivity extends YouTubeBaseActivity implements YouTube
                     if (cinephile.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
                         ratedMoviesReference = DCinephiliaInstance.getReference(element_genre);
-                        Rate rating  = new Rate(cinephile.getEmail(), element_id, my_rate);
+                        Rate rating  = new Rate(cinephile.getEmail(), element_id, my_rate, movie, url_movie);
                         ratedMoviesReference.child(String.valueOf(element_id)).push().setValue(rating);
                     }
                 }
@@ -985,14 +986,12 @@ public class MovieDetailsActivity extends YouTubeBaseActivity implements YouTube
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         my_spinner.setAdapter(dataAdapter);
-        System.out.println(" jere 3"+my_spinner.getSelectedItem());
         my_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
                                        int position, long id) {
 
                 String item = String.valueOf(adapterView.getItemAtPosition(position));
-                System.out.println(" fifoo  "+item);
 
             }
 

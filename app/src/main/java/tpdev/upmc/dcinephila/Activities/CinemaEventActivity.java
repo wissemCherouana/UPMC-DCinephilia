@@ -30,6 +30,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,12 +48,13 @@ public class CinemaEventActivity extends AppCompatActivity implements OnMapReady
     private static String TAG = CinemasActivity.class.getSimpleName();
     private static final int TAG_CODE_PERMISSION_LOCATION = 1;
     private GoogleMap mMap;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cinema_event);
-
+        auth = FirebaseAuth.getInstance();
         Intent intent = getIntent();
         String cinema_name = intent.getStringExtra("place");
 
@@ -184,8 +186,13 @@ public class CinemaEventActivity extends AppCompatActivity implements OnMapReady
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(CinemaEventActivity.this, CinemasActivity.class);
+            Intent intent = new Intent(CinemaEventActivity.this, ProfileActivity.class);
             startActivity(intent);
+        }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(CinemaEventActivity.this, LoginActivity.class));
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -198,17 +205,32 @@ public class CinemaEventActivity extends AppCompatActivity implements OnMapReady
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent = new Intent(CinemaEventActivity.this, CinemasActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(CinemaEventActivity.this, SeancesMoviesActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(CinemaEventActivity.this, EventsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(CinemaEventActivity.this, StatisticsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(CinemaEventActivity.this, ProfileActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(CinemaEventActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(CinemaEventActivity.this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -220,7 +242,6 @@ public class CinemaEventActivity extends AppCompatActivity implements OnMapReady
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 }

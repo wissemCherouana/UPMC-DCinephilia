@@ -3,7 +3,6 @@ package tpdev.upmc.dcinephila.Fragments;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -39,7 +38,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import tpdev.upmc.dcinephila.APIs.ThemoviedbApiAccess;
-import tpdev.upmc.dcinephila.Activities.CinemaArticlesActivity;
+import tpdev.upmc.dcinephila.Activities.MainActivity;
 import tpdev.upmc.dcinephila.DesignClasses.AppController;
 import tpdev.upmc.dcinephila.DesignClasses.ArticleSlider.CardSliderLayoutManager;
 import tpdev.upmc.dcinephila.DesignClasses.ArticleSlider.CardSnapHelper;
@@ -53,7 +52,7 @@ public class NewsFragment extends Fragment {
     private ArrayList<String> countries = new ArrayList<>() ;
     private final ArrayList<String> temperatures = new ArrayList<>();
     private final ArrayList<String> times = new ArrayList<>();
-    private static String TAG = CinemaArticlesActivity.class.getSimpleName();
+    private static String TAG = MainActivity.class.getSimpleName();
 
     private ArrayList<String> images = new ArrayList<>();
     private SliderAdapter sliderAdapter ;

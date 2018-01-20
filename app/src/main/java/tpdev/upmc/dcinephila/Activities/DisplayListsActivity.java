@@ -59,9 +59,9 @@ public class DisplayListsActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Get Firebase database instance
-        mFirebaseInstance = FirebaseDatabase.getInstance();
 
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -162,6 +162,11 @@ public class DisplayListsActivity extends AppCompatActivity
             Intent intent = new Intent(DisplayListsActivity.this, ProfileActivity.class);
             startActivity(intent);
         }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(DisplayListsActivity.this, LoginActivity.class));
+            finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -187,12 +192,18 @@ public class DisplayListsActivity extends AppCompatActivity
             Intent intent = new Intent(DisplayListsActivity.this, StatisticsActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_share) {
-            Intent intent = new Intent(DisplayListsActivity.this, SearchProfileActivity.class);
+        }else if (id == R.id.nav_share) {
+            Intent intent = new Intent(DisplayListsActivity.this, ProfileActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(DisplayListsActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(DisplayListsActivity.this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

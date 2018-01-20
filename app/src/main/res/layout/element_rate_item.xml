@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_width="368dp"
+        android:layout_height="140dp"
         android:orientation="horizontal"
         tools:layout_editor_absoluteY="0dp"
         tools:layout_editor_absoluteX="8dp">
@@ -25,9 +25,10 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="6"
+            android:layout_weight="5"
             android:orientation="vertical"
-            android:layout_marginTop="10dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="15dp"
             >
@@ -37,15 +38,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
+                android:layout_marginTop="17dp"
                 android:maxLines="2"
-                android:textColor="#555"
+                android:textColor="@android:color/black"
                 android:textSize="16sp" />
-            <TextView
-                android:id="@+id/genre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#999"
-                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,10 +53,10 @@
                     android:layout_width="30dp"
                     android:layout_height="26dp"
                     android:layout_weight="1"
-                    android:src="@drawable/calendar" />
+                    android:src="@drawable/starfilled" />
 
                 <TextView
-                    android:id="@+id/date_of"
+                    android:id="@+id/rate_of"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
@@ -74,4 +70,4 @@
         </LinearLayout>
 
     </LinearLayout>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

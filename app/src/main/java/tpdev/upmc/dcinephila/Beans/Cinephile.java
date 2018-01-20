@@ -15,7 +15,6 @@ public class Cinephile {
     private String description;
     private String sexe;
 
-
     public Cinephile() {
     }
 
@@ -25,6 +24,12 @@ public class Cinephile {
         this.lastname = lastname ;
         this.email = email ;
         this.password = password;
+    }
+
+    public Cinephile(String firstname, String lastname,String description) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.description = description;
     }
 
     public Cinephile(String firstname, String lastname, String email, String password, String description, String sexe) {

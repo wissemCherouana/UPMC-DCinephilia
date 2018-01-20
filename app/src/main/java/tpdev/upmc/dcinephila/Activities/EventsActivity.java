@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,13 +36,13 @@ public class EventsActivity extends AppCompatActivity implements NavigationView.
 
     private DatabaseReference eventsReference;
     private FirebaseDatabase DCinephiliaInstance;
-
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
-
+        auth = FirebaseAuth.getInstance();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,7 +61,7 @@ public class EventsActivity extends AppCompatActivity implements NavigationView.
         eventsRecyclerView =
                 (HorizontalInfiniteCycleViewPager) findViewById(R.id.hicvp);
         GetEvents();
-        
+
     }
 
 
@@ -72,29 +73,29 @@ public class EventsActivity extends AppCompatActivity implements NavigationView.
             public void onDataChange(DataSnapshot dataSnapshot) {
                 eventsList = new ArrayList<Utils.EventItem>();
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren())
-                    {
-                        Event event = singleSnapshot.getValue(Event.class);
-                        String event_id = event.getEvent_id();
-                        String event_name = event.getEvent_name();
-                        String event_movie = event.getEvent_seance().getMovie();
-                        String event_description = event.getEvent_description();
-                        String[] date_parts = event.getEvent_seance().getSeance_date().split(" ");
-                        String event_date = date_parts[0];
-                        String event_hour = date_parts[1];
-                        String event_place = event.getEvent_seance().getSeance_place();
-                        String event_poster = event.getEvent_seance().getMovie_poster();
-                        int event_limit = event.getEvent_limit();
-                        String event_created_by = event.getEvent_created_by().getFirstname() + " " +
-                                event.getEvent_created_by().getLastname().toUpperCase();
+                {
+                    Event event = singleSnapshot.getValue(Event.class);
+                    String event_id = event.getEvent_id();
+                    String event_name = event.getEvent_name();
+                    String event_movie = event.getEvent_seance().getMovie();
+                    String event_description = event.getEvent_description();
+                    String[] date_parts = event.getEvent_seance().getSeance_date().split(" ");
+                    String event_date = date_parts[0];
+                    String event_hour = date_parts[1];
+                    String event_place = event.getEvent_seance().getSeance_place();
+                    String event_poster = event.getEvent_seance().getMovie_poster();
+                    int event_limit = event.getEvent_limit();
+                    String event_created_by = event.getEvent_created_by().getFirstname() + " " +
+                            event.getEvent_created_by().getLastname().toUpperCase();
 
-                        Utils.EventItem eventItem = new Utils.EventItem(event_id, event_name,event_movie,event_poster, event_description,event_date,
-                        event_hour,event_place,event_limit,event_created_by);
+                    Utils.EventItem eventItem = new Utils.EventItem(event_id, event_name,event_movie,event_poster, event_description,event_date,
+                            event_hour,event_place,event_limit,event_created_by);
 
-                        eventsList.add(eventItem);
-                    }
+                    eventsList.add(eventItem);
+                }
                 eventsRecyclerView.setAdapter(new EventAdapter(getApplicationContext(),eventsList));
                 eventsRecyclerView.notifyDataSetChanged();
-                }
+            }
 
 
 
@@ -105,6 +106,7 @@ public class EventsActivity extends AppCompatActivity implements NavigationView.
         });
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -127,8 +129,13 @@ public class EventsActivity extends AppCompatActivity implements NavigationView.
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(EventsActivity.this, CinemasActivity.class);
+            Intent intent = new Intent(EventsActivity.this, ProfileActivity.class);
             startActivity(intent);
+        }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(EventsActivity.this, LoginActivity.class));
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -141,17 +148,32 @@ public class EventsActivity extends AppCompatActivity implements NavigationView.
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent = new Intent(EventsActivity.this, CinemasActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(EventsActivity.this, SeancesMoviesActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(EventsActivity.this, EventsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(EventsActivity.this, StatisticsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(EventsActivity.this, ProfileActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(EventsActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(EventsActivity.this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

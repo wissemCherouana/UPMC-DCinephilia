@@ -24,8 +24,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private TextView firtsname_profile_text, lastname_profile_text, email_profile_text, adress_value, description;
-    private ImageView event_view,lists_view,edit_view;
-    private TextView event_text, lists_text,edit_text;
+    private ImageView event_view,lists_view,edit_view, rates_view, likes_view;
+    private TextView event_text, lists_text,edit_text,like_text,rate_text;
     private CircleImageView actor_avatar;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
@@ -47,11 +47,17 @@ public class ProfileActivity extends AppCompatActivity {
         event_view=(ImageView)findViewById(R.id.event);
         lists_view=(ImageView)findViewById(R.id.lists);
         edit_view=(ImageView)findViewById(R.id.update);
+        rates_view =(ImageView) findViewById(R.id.rates_profile);
+        likes_view =(ImageView)findViewById(R.id.likes_profile);
         lists_text =(TextView) findViewById(R.id.create_lists);
         event_text=(TextView) findViewById(R.id.create_event);
+        like_text=(TextView)findViewById(R.id.like_lists);
+        rate_text=(TextView)findViewById(R.id.rate_lists);
         edit_text=(TextView)findViewById(R.id.update_lists) ;
         adress_value.setTypeface(face);
         lists_text.setTypeface(face_bold);
+        rate_text.setTypeface(face_bold);
+        like_text.setTypeface(face_bold);
         event_text.setTypeface(face_bold);
         edit_text.setTypeface(face_bold);
         firtsname_profile_text.setTypeface(face_bold);
@@ -73,7 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
         event_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 startActivity(new Intent(ProfileActivity.this, CreateEventActivity.class));
+                startActivity(new Intent(ProfileActivity.this, CreateEventActivity.class));
             }
         });
 
@@ -91,6 +97,34 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        likes_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, DisplayLikesActivity.class));
+            }
+        });
+
+        like_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, DisplayLikesActivity.class));
+            }
+        });
+
+        rates_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, DisplayRatesActivity.class));
+            }
+        });
+
+        rate_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, DisplayRatesActivity.class));
+            }
+        });
+
         edit_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +137,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProfileActivity.this, UpdateProfileActivity.class));
+                finish();
             }
         });
 

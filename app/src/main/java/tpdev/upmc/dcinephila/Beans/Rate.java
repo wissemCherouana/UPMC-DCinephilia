@@ -9,11 +9,26 @@ public class Rate {
     private String cinephile;
     private int element_id;
     private float rating_value;
+    private String title;
+    private String url;
 
     public Rate(){}
 
     public Rate(String cinephile, int element_id, float rating_value) {
         this.cinephile = cinephile;
+        this.element_id = element_id;
+        this.rating_value = rating_value;
+    }
+
+    public Rate(String cinephile, int element_id, float rating_value, String title, String url) {
+        this.cinephile = cinephile;
+        this.element_id = element_id;
+        this.rating_value = rating_value;
+        this.title = title;
+        this.url = url;
+    }
+
+    public Rate(int element_id, float rating_value){
         this.element_id = element_id;
         this.rating_value = rating_value;
     }
@@ -40,5 +55,21 @@ public class Rate {
 
     public void setRating_value(float rating_value) {
         this.rating_value = rating_value;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

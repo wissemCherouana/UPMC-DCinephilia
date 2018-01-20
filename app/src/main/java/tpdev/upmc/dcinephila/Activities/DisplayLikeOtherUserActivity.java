@@ -1,8 +1,16 @@
 package tpdev.upmc.dcinephila.Activities;
 
-import android.graphics.Typeface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,37 +25,53 @@ import java.util.HashSet;
 import java.util.List;
 
 import tpdev.upmc.dcinephila.Adapaters.ElementLikeAdapter;
+import tpdev.upmc.dcinephila.Beans.Like;
 import tpdev.upmc.dcinephila.R;
 
 /**
  * Created by Sourour Bnll on 14/01/2018.
  */
 
-public class DisplayLikeOtherUserActivity extends AppCompatActivity {
-    private List<String> myLists;
-    private FirebaseAuth auth;
+public class DisplayLikeOtherUserActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+
+    private List<Like> myLists;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
-    ElementLikeAdapter adapter;
+    private ElementLikeAdapter adapter;
     private String emailOtherUser;
+    private FirebaseAuth auth;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_likes);
-        Typeface face_bold = Typeface.createFromAsset(getApplicationContext().getAssets(), "font/Comfortaa-Bold.ttf");
 
-        // Get Firebase database instance
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
         mFirebaseInstance = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
+
         Bundle i = getIntent().getExtras();
         emailOtherUser=i.getString("emailOtherUser");
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
         ListView listView = (ListView)findViewById(R.id.listView);
-        myLists = new ArrayList<String>();
-        HashSet<String> hashSet = new HashSet<String>();
+        myLists = new ArrayList<Like>();
+        HashSet<Like> hashSet = new HashSet<Like>();
         hashSet.addAll(myLists);
         myLists.clear();
         myLists.addAll(hashSet);
-        //creer un autre ElementLike niania
+
         adapter = new ElementLikeAdapter( this,
                 R.layout.element_movie_item,
                 myLists);
@@ -59,20 +83,18 @@ public class DisplayLikeOtherUserActivity extends AppCompatActivity {
 
 
     public void display(){
-        //ici il faut iterer sur les childs pr voir si emailOtherUser y est
-        //puis aprés si c le cas on prend elementid et on le passe à l'adapter pr avoir une arraylist d'id movie
-        //ensuite ds l'autre classe adapter pour chaque id movie on appelle GetMovieDetails(ThemoviedbApiAccess.AllMovieDetailsURL(movie_id)); qui
-        //se trouve à la ligne 387 et on get l url et le nom et date de l'element
-        mFirebaseDatabase = mFirebaseInstance.getReference("cinephiles_movies_likes");
+         mFirebaseDatabase = mFirebaseInstance.getReference("cinephiles_movies_likes");
         mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     for(DataSnapshot c : child.getChildren()){
                         for(DataSnapshot d : c.getChildren()) {
-                            if (d.getValue().equals(emailOtherUser)) {
-                                 adapter.add(c.child("element_id").getValue().toString());
-
+                            Like like = c.getValue(Like.class);
+                            if (like.getCinephile().equals(emailOtherUser))
+                            {
+                                adapter.add(like);
+                                adapter.notifyDataSetChanged();
                             }
                         }
                     }
@@ -85,5 +107,84 @@ public class DisplayLikeOtherUserActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar event_card clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(DisplayLikeOtherUserActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(DisplayLikeOtherUserActivity.this, LoginActivity.class));
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view event_card clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            Intent intent = new Intent(DisplayLikeOtherUserActivity.this, CinemasActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(DisplayLikeOtherUserActivity.this, SeancesMoviesActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(DisplayLikeOtherUserActivity.this, EventsActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(DisplayLikeOtherUserActivity.this, StatisticsActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(DisplayLikeOtherUserActivity.this, ProfileActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_send) {
+            Intent intent = new Intent(DisplayLikeOtherUserActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(DisplayLikeOtherUserActivity.this, LoginActivity.class));
+            finish();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
 }

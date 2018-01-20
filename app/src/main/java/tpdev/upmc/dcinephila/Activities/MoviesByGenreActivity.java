@@ -30,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,12 +58,13 @@ public class MoviesByGenreActivity extends AppCompatActivity implements Navigati
     private SearchMoviesResultsAdapter MoviesResultsAdapter;
     private ArrayList<Movie> moviesResultsList;
     private static String TAG = SearchResultsActivity.class.getSimpleName();
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_by_genre);
-
+        auth = FirebaseAuth.getInstance();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -138,8 +140,8 @@ public class MoviesByGenreActivity extends AppCompatActivity implements Navigati
                         String release_date = result_json.getString("release_date");
                         if (!(result_json.getString("poster_path").equals("null")))
                         {
-                           moviesResultsList.add(new Movie(movie_id, title, release_date, poster));
-                           MoviesResultsAdapter.notifyDataSetChanged();
+                            moviesResultsList.add(new Movie(movie_id, title, release_date, poster));
+                            MoviesResultsAdapter.notifyDataSetChanged();
                         }
                     }
                     Collections.sort(moviesResultsList, new Comparator<Movie>() {
@@ -218,6 +220,7 @@ public class MoviesByGenreActivity extends AppCompatActivity implements Navigati
     }
 
 
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -239,8 +242,13 @@ public class MoviesByGenreActivity extends AppCompatActivity implements Navigati
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(MoviesByGenreActivity.this, CinemasActivity.class);
+            Intent intent = new Intent(MoviesByGenreActivity.this, ProfileActivity.class);
             startActivity(intent);
+        }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(MoviesByGenreActivity.this, LoginActivity.class));
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -253,17 +261,32 @@ public class MoviesByGenreActivity extends AppCompatActivity implements Navigati
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent = new Intent(MoviesByGenreActivity.this, CinemasActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(MoviesByGenreActivity.this, SeancesMoviesActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(MoviesByGenreActivity.this, EventsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(MoviesByGenreActivity.this, StatisticsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(MoviesByGenreActivity.this, ProfileActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(MoviesByGenreActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(MoviesByGenreActivity.this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -274,25 +297,7 @@ public class MoviesByGenreActivity extends AppCompatActivity implements Navigati
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        MenuItem searchViewItem = menu.findItem(R.id.action_search);
-        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
-        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchViewAndroidActionBar.clearFocus();
-
-                Intent intent = new Intent(MoviesByGenreActivity.this, SearchResultsActivity.class);
-                intent.putExtra("query", searchViewAndroidActionBar.getQuery().toString());
-                startActivity(intent);
-                return true ;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+        inflater.inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 }

@@ -2,11 +2,19 @@ package tpdev.upmc.dcinephila.Activities;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +41,8 @@ import tpdev.upmc.dcinephila.DesignClasses.Timeline.OrderStatus;
 import tpdev.upmc.dcinephila.DesignClasses.Timeline.Orientation;
 import tpdev.upmc.dcinephila.DesignClasses.Timeline.TimeLineModel;
 
-public class SeasonEpisodesActivity extends AppCompatActivity {
+public class SeasonEpisodesActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView show_title;
     private RecyclerView mRecyclerView;
@@ -40,12 +51,27 @@ public class SeasonEpisodesActivity extends AppCompatActivity {
     private Orientation mOrientation;
     private boolean mWithLinePadding;
     private static String TAG = SeasonEpisodesActivity.class.getSimpleName();
+    private FirebaseAuth auth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_season_episodes);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        auth = FirebaseAuth.getInstance();
         Typeface face_bold= Typeface.createFromAsset(getApplicationContext().getAssets(), "font/Comfortaa-Bold.ttf");
 
         Intent intent = getIntent();
@@ -120,4 +146,85 @@ public class SeasonEpisodesActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar event_card clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(SeasonEpisodesActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(SeasonEpisodesActivity.this, LoginActivity.class));
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view event_card clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            Intent intent = new Intent(SeasonEpisodesActivity.this, CinemasActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(SeasonEpisodesActivity.this, SeancesMoviesActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(SeasonEpisodesActivity.this, EventsActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(SeasonEpisodesActivity.this, StatisticsActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(SeasonEpisodesActivity.this, ProfileActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_send) {
+            Intent intent = new Intent(SeasonEpisodesActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(SeasonEpisodesActivity.this, LoginActivity.class));
+            finish();
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 }

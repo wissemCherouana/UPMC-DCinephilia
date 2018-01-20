@@ -2,8 +2,16 @@ package tpdev.upmc.dcinephila.Activities;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -28,7 +36,8 @@ import tpdev.upmc.dcinephila.Beans.Like;
 import tpdev.upmc.dcinephila.DesignClasses.Utility;
 import tpdev.upmc.dcinephila.R;
 
-public class DisplayElementCommentsActivity extends AppCompatActivity {
+public class DisplayElementCommentsActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private DatabaseReference elementsCommentsReference, cinephilesReference;
     private TextView comments_text, comments_number, comment;
@@ -37,11 +46,28 @@ public class DisplayElementCommentsActivity extends AppCompatActivity {
     private ListView comments_listview ;
     private ArrayList<Comment> comments_list;
     private CommentAdapter commentAdapter;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_element_comments);
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        auth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
         final int element_id = intent.getIntExtra("element_id", 0);
@@ -95,9 +121,14 @@ public class DisplayElementCommentsActivity extends AppCompatActivity {
 
                     if (cinephile.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
+                        String thumbnail = "";
+                        if (cinephile.getSexe().equals("Femme"))
+                            thumbnail = "https://icon-icons.com/icons2/582/PNG/512/girl_icon-icons.com_55043.png";
+                        else thumbnail = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/boy-512.png";
+
                         elementsCommentsReference = DCinephiliaInstance.getReference(element_genre);
                         Comment comment = new Comment(comment_content,new Date(), cinephile.getFirstname() +
-                                " " + cinephile.getLastname().toUpperCase()  , movie_id);
+                                " " + cinephile.getLastname().toUpperCase()  , movie_id, thumbnail);
                         elementsCommentsReference.child(String.valueOf(movie_id)).push().setValue(comment);
                     }
                 }
@@ -122,8 +153,8 @@ public class DisplayElementCommentsActivity extends AppCompatActivity {
                     {
                         Comment comment = singleSnapshot.getValue(Comment.class);
 
-                            comments_list.add(comment);
-                            commentAdapter.notifyDataSetChanged();
+                        comments_list.add(comment);
+                        commentAdapter.notifyDataSetChanged();
                     }
                     comments_number.setText("•  " +String.valueOf(comments_list.size()));
                 }
@@ -135,6 +166,88 @@ public class DisplayElementCommentsActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar event_card clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(DisplayElementCommentsActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(DisplayElementCommentsActivity.this, LoginActivity.class));
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view event_card clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            Intent intent = new Intent(DisplayElementCommentsActivity.this, CinemasActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(DisplayElementCommentsActivity.this, SeancesMoviesActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(DisplayElementCommentsActivity.this, EventsActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(DisplayElementCommentsActivity.this, StatisticsActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(DisplayElementCommentsActivity.this, ProfileActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_send) {
+            Intent intent = new Intent(DisplayElementCommentsActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(DisplayElementCommentsActivity.this, LoginActivity.class));
+            finish();
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
 

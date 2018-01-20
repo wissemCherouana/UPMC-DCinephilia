@@ -36,16 +36,19 @@ import tpdev.upmc.dcinephila.R;
  */
 
 public class SearchProfileActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
     private List<String> myLists;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     SearchProfileAdapter adapter;
     private TextView text;
+    private FirebaseAuth auth;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_profile);
-
+        auth = FirebaseAuth.getInstance();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -90,12 +93,12 @@ public class SearchProfileActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
-                            Cinephile cinp = child.getValue(Cinephile.class);
-                            if(cinp.getFirstname().toLowerCase().contains(text.getText().toString().toLowerCase())
-                              || cinp.getLastname().toLowerCase().contains(text.getText().toString().toLowerCase())
-                              || cinp.getEmail().toLowerCase().contains(text.getText().toString().toLowerCase())){
-                               myLists.add(cinp.getEmail());
-                               adapter.notifyDataSetChanged();
+                    Cinephile cinp = child.getValue(Cinephile.class);
+                    if(cinp.getFirstname().toLowerCase().contains(text.getText().toString().toLowerCase())
+                            || cinp.getLastname().toLowerCase().contains(text.getText().toString().toLowerCase())
+                            || cinp.getEmail().toLowerCase().contains(text.getText().toString().toLowerCase())){
+                        myLists.add(cinp.getEmail());
+                        adapter.notifyDataSetChanged();
 
                     }
                 }
@@ -131,6 +134,11 @@ public class SearchProfileActivity extends AppCompatActivity
             Intent intent = new Intent(SearchProfileActivity.this, ProfileActivity.class);
             startActivity(intent);
         }
+        if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(SearchProfileActivity.this, LoginActivity.class));
+            finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -157,11 +165,17 @@ public class SearchProfileActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_share) {
-            Intent intent = new Intent(SearchProfileActivity.this, SearchProfileActivity.class);
+            Intent intent = new Intent(SearchProfileActivity.this, ProfileActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(SearchProfileActivity.this, SearchProfileActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.disconnect) {
+            auth.signOut();
+            startActivity(new Intent(SearchProfileActivity.this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
