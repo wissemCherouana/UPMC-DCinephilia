@@ -27,7 +27,7 @@
     <string name="btn_remove">Remove</string>
     <string name="btn_sign_out">Sign Out</string>
     <string name="lbl_forgot_password">Mot de passe oublié ?</string>
-    <string name="forgot_password_msg">Nous avons juste besoin de votre email pour vous envoyer les instructions de réinitialisation de mot de passe</string>
+    <string name="forgot_password_msg">Nous avons juste besoin de votre email pour vous envoyer les instructions de réinitialisation de mot de passe !</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -47,7 +47,8 @@ import tpdev.upmc.dcinephila.Beans.GeographicalPosition;
 import tpdev.upmc.dcinephila.DesignClasses.AppController;
 import tpdev.upmc.dcinephila.R;
 
-public class CinemasActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+public class CinemasActivity extends AppCompatActivity
+        implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
     private static String TAG = CinemasActivity.class.getSimpleName();
     private static final int TAG_CODE_PERMISSION_LOCATION = 1;

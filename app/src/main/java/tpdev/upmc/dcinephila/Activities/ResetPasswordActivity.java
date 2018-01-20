@@ -1,5 +1,6 @@
 package tpdev.upmc.dcinephila.Activities;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,6 +20,7 @@ import tpdev.upmc.dcinephila.R;
 
 public class ResetPasswordActivity extends AppCompatActivity {
     private EditText inputEmail;
+    private TextView textview;
     private Button btnReset, btnBack;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
@@ -26,6 +29,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
+        Typeface face= Typeface.createFromAsset(getApplicationContext().getAssets(), "font/CollegeMovie.ttf");
+        textview = (TextView) findViewById(R.id.dcinephilia);
+        textview.setTypeface(face);
         inputEmail = (EditText) findViewById(R.id.email);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
         btnBack = (Button) findViewById(R.id.btn_back);

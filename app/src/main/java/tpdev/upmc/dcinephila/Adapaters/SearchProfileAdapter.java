@@ -2,6 +2,7 @@ package tpdev.upmc.dcinephila.Adapaters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -53,17 +55,18 @@ public class SearchProfileAdapter extends ArrayAdapter<String> {
         if (convertView == null) {
             convertView = createView();
         }
+        Typeface face= Typeface.createFromAsset(context.getAssets(), "font/Comfortaa-Light.ttf");
 
         SearchProfileAdapter.ViewHolder holder = (SearchProfileAdapter.ViewHolder) convertView.getTag();
         final String todo = getItem(position);
         holder.textView.setText(todo);
+        holder.textView.setTypeface(face);
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // a la place de ça je met un getExtra pour get le mail et voilà
 
                 final String mail = myLists.get(position).toString();
-                System.out.println("le put extra"+mail);
                 Intent intent = new Intent(context.getApplicationContext(), ConsultOtherProfileActivity.class).putExtra("consultProfile",mail);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                 context.getApplicationContext().startActivity(intent);
