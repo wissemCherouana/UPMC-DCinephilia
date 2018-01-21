@@ -31,10 +31,6 @@ import tpdev.upmc.dcinephila.Adapaters.ElementLikeAdapter;
 import tpdev.upmc.dcinephila.Beans.Like;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 19/01/2018.
- */
-
 public class DisplayLikesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -73,7 +69,7 @@ public class DisplayLikesActivity extends AppCompatActivity
         myLists = new ArrayList<Like>();
 
         adapter = new ElementLikeAdapter( this,
-                R.layout.element_movie_item,
+                R.layout.element_movie_item_bis,
                 myLists);
 
         listView.setAdapter(adapter);

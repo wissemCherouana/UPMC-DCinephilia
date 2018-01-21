@@ -30,10 +30,6 @@ import tpdev.upmc.dcinephila.Adapaters.ElementListAdapter;
 import tpdev.upmc.dcinephila.Beans.ElementList;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 23/12/2017.
- */
-
 public class DisplayElementsListsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private List<ElementList> myLists;

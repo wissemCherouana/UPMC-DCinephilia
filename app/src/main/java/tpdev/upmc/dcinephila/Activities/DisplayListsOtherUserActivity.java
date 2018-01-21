@@ -30,9 +30,6 @@ import tpdev.upmc.dcinephila.Beans.ElementList;
 import tpdev.upmc.dcinephila.Beans.ListCinephile;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 13/01/2018.
- */
 
 public class DisplayListsOtherUserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

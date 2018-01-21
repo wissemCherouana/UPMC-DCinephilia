@@ -30,10 +30,6 @@ import tpdev.upmc.dcinephila.Adapaters.ElementListOtherUserAdapter;
 import tpdev.upmc.dcinephila.Beans.ElementList;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 14/01/2018.
- */
-
 public class DisplayElementsListOtherUserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -80,7 +76,7 @@ public class DisplayElementsListOtherUserActivity extends AppCompatActivity
         myLists.clear();
         myLists.addAll(hashSet);
         adapter = new ElementListOtherUserAdapter( this,
-                R.layout.element_movie_item,
+                R.layout.element_movie_item_bis,
                 myLists);
 
         listView.setAdapter(adapter);

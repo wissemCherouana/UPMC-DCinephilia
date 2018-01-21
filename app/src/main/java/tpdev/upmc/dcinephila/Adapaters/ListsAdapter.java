@@ -3,6 +3,7 @@ package tpdev.upmc.dcinephila.Adapaters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,9 +27,6 @@ import java.util.List;
 import tpdev.upmc.dcinephila.Activities.DisplayElementsListsActivity;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 18/12/2017.
- */
 
 public class ListsAdapter extends ArrayAdapter<String> {
     final int layoutResource;
@@ -36,7 +34,7 @@ public class ListsAdapter extends ArrayAdapter<String> {
     private Context context;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
-    ArrayList<String> a=new ArrayList<String>();
+    ArrayList<String> a = new ArrayList<String>();
     // Get Firebase database instance
 
     private static class ViewHolder {
@@ -59,15 +57,17 @@ public class ListsAdapter extends ArrayAdapter<String> {
         if (convertView == null) {
             convertView = createView();
         }
+        Typeface face = Typeface.createFromAsset(context.getAssets(), "font/Comfortaa-Bold.ttf");
 
         ViewHolder holder = (ViewHolder) convertView.getTag();
-        final String todo = getItem(position);
-        holder.textView.setText(todo);
+        final String list = getItem(position);
+        holder.textView.setText(list);
+        holder.textView.setTypeface(face);
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String title = myLists.get(position).toString();
-                Intent intent = new Intent(context.getApplicationContext(), DisplayElementsListsActivity.class).putExtra("tit",title);
+                Intent intent = new Intent(context.getApplicationContext(), DisplayElementsListsActivity.class).putExtra("tit", title);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                 context.getApplicationContext().startActivity(intent);
             }
@@ -77,7 +77,7 @@ public class ListsAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View view) {
                 String title = myLists.get(position).toString();
-                removeList(title,position);
+                removeList(title, position);
             }
         });
         return convertView;
@@ -99,16 +99,16 @@ public class ListsAdapter extends ArrayAdapter<String> {
 
     private void removeList(final String t, final int position) {
 
-        AlertDialog.Builder adb=new AlertDialog.Builder(getContext());
+        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
         adb.setTitle("Supprimer ? ");
-        adb.setMessage("Etes vous sûr de bien vouloir supprimer cette liste");
+        adb.setMessage("Etes vous sûr de bien vouloir supprimer cette liste ?");
         adb.setNegativeButton("Cancel", null);
         adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 final int positionToRemove = position;
                 DatabaseReference mFirebaseDatabase;
-                FirebaseDatabase mFirebaseInstance=null;
-                mFirebaseDatabase = mFirebaseInstance.getInstance().getReference("lists_cinephile/"+t);
+                FirebaseDatabase mFirebaseInstance = null;
+                mFirebaseDatabase = mFirebaseInstance.getInstance().getReference("lists_cinephile/" + t);
                 mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -124,9 +124,9 @@ public class ListsAdapter extends ArrayAdapter<String> {
                 myLists.clear();
                 notifyDataSetChanged();
 
-            }});
+            }
+        });
         adb.show();
-
 
 
     }

@@ -35,10 +35,6 @@ import tpdev.upmc.dcinephila.R;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by Sourour Bnll on 19/01/2018.
- */
-
 public class ElementRateAdapter extends ArrayAdapter<Rate> {
     final int layoutResource;
     private final List<Rate> myLists;
@@ -79,7 +75,6 @@ public class ElementRateAdapter extends ArrayAdapter<Rate> {
         holder.textView.setTypeface(face_bold);
         holder.rate.setTypeface(face);
         final Rate rate = getItem(position);
-        // on se charge ici de get tt les trucs de name date et ect...
         holder.textView.setText(rate.getTitle());
         holder.rate.setText(String.valueOf(rate.getRating_value())+"/10");
         Glide.with(getContext()).load(rate.getUrl()).into(holder.image);
@@ -100,53 +95,4 @@ public class ElementRateAdapter extends ArrayAdapter<Rate> {
         return view;
     }
 
-    private void GetMovieDetails(final String urlJsonObj) {
-        System.out.println("iciii");
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                urlJsonObj, null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d(TAG, response.toString());
-                try {
-
-                    movie=response.getString("title");
-                    holder.textView.setText(movie);
-                    System.out.println("le titre"+response.getString("title"));
-                    try {
-                        if (response.getString("release_date")!=null)
-                            release_date = response.getString("release_date");
-                        System.out.println("la data"+response.getString("release_date"));
-                    }
-                    catch (Exception e){
-                        release_date="";
-                    }
-
-                    // Getting movie runtime
-                    System.out.println("la url  "+response.getString("poster_path"));
-                    url_movie="https://image.tmdb.org/t/p/w500" + response.getString("poster_path");
-
-                    Glide.with(getContext()).load("https://image.tmdb.org/t/p/w500" + response.getString("poster_path")).into(holder.image);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getContext(),
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
-    }
 }

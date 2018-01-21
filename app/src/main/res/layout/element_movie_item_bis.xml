@@ -29,7 +29,7 @@
             android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="15dp"
             >
 
             <TextView
@@ -67,15 +67,7 @@
                     android:layout_marginBottom="7dp"
                     android:layout_weight="5"
                     android:textColor="#444"
-                    android:textSize="13sp" />
-
-                <ImageView android:id="@+id/deleteBtn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/trash"/>
+                    android:textSize="14sp" />
 
             </LinearLayout>
 

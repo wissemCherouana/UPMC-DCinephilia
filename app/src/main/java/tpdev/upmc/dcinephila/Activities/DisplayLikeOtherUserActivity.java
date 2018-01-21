@@ -28,10 +28,6 @@ import tpdev.upmc.dcinephila.Adapaters.ElementLikeAdapter;
 import tpdev.upmc.dcinephila.Beans.Like;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 14/01/2018.
- */
-
 public class DisplayLikeOtherUserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -73,7 +69,7 @@ public class DisplayLikeOtherUserActivity extends AppCompatActivity
         myLists.addAll(hashSet);
 
         adapter = new ElementLikeAdapter( this,
-                R.layout.element_movie_item,
+                R.layout.element_movie_item_bis,
                 myLists);
 
         listView.setAdapter(adapter);
@@ -89,14 +85,12 @@ public class DisplayLikeOtherUserActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     for(DataSnapshot c : child.getChildren()){
-                        for(DataSnapshot d : c.getChildren()) {
                             Like like = c.getValue(Like.class);
                             if (like.getCinephile().equals(emailOtherUser))
                             {
                                 adapter.add(like);
                                 adapter.notifyDataSetChanged();
                             }
-                        }
                     }
                 }
             }

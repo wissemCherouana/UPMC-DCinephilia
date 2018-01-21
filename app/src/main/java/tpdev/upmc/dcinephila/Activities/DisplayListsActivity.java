@@ -38,13 +38,9 @@ import tpdev.upmc.dcinephila.Adapaters.ListsAdapter;
 import tpdev.upmc.dcinephila.Beans.ListCinephile;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 18/12/2017.
- */
-
 public class DisplayListsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    // List de mes favoris
+
     private List<String> myLists;
     private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabase;

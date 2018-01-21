@@ -12,10 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,29 +22,31 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
-import tpdev.upmc.dcinephila.Adapaters.SearchProfileAdapter;
-import tpdev.upmc.dcinephila.Beans.Cinephile;
+import tpdev.upmc.dcinephila.Adapaters.ElementRateAdapter;
+import tpdev.upmc.dcinephila.Beans.Rate;
 import tpdev.upmc.dcinephila.R;
 
-public class SearchProfileActivity extends AppCompatActivity
+public class DisplayRatesOtherUserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private List<String> myLists;
+
+    private List<Rate> myLists;
+    private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
-    SearchProfileAdapter adapter;
-    private TextView text;
-    private FirebaseAuth auth;
+    ElementRateAdapter adapter;
+    private String emailOtherUser;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_profile);
-        auth = FirebaseAuth.getInstance();
+        setContentView(R.layout.activity_display_rates);
+        Bundle i = getIntent().getExtras();
+        emailOtherUser=i.getString("emailOtherUser");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,45 +56,41 @@ public class SearchProfileActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        // Get Firebase database instance
+
+
+        Typeface face_bold = Typeface.createFromAsset(getApplicationContext().getAssets(), "font/Comfortaa-Bold.ttf");
+
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
-        Typeface face= Typeface.createFromAsset(getApplicationContext().getAssets(), "font/Comfortaa-Light.ttf");
+        auth = FirebaseAuth.getInstance();
+        ListView listView = (ListView)findViewById(R.id.listView);
+        myLists = new ArrayList<Rate>();
+        HashSet<Rate> hashSet = new HashSet<Rate>();
+        hashSet.addAll(myLists);
+        myLists.clear();
+        myLists.addAll(hashSet);
 
-        final ImageView btn = (ImageView)findViewById(R.id.search_profile);
-        text= (TextView)findViewById(R.id.searching);
-        text.setTypeface(face);
-        ListView listView = (ListView)findViewById(R.id.listView_profile);
-        myLists = new ArrayList<String>();
-        adapter = new SearchProfileAdapter(
-                this,
-                R.layout.list_other_item,
+        adapter = new ElementRateAdapter( this,
+                R.layout.element_rate_item,
                 myLists);
-        listView.setAdapter(adapter);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchProfile();
-            }
-        });
 
+        listView.setAdapter(adapter);
+        display();
 
     }
 
-    public void searchProfile(){
-        myLists.clear();
-        mFirebaseDatabase = mFirebaseInstance.getReference("cinephiles");
+
+    public void display(){
+        mFirebaseDatabase = mFirebaseInstance.getReference("cinephiles_movies_rates");
         mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    Cinephile cinp = child.getValue(Cinephile.class);
-                    if(cinp.getFirstname().toLowerCase().contains(text.getText().toString().toLowerCase())
-                            || cinp.getLastname().toLowerCase().contains(text.getText().toString().toLowerCase())
-                            || cinp.getEmail().toLowerCase().contains(text.getText().toString().toLowerCase())){
-                        if (!cinp.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
+                    for(DataSnapshot c : child.getChildren()){
+                        Rate rate= c.getValue(Rate.class);
+                        if (rate.getCinephile().equals(emailOtherUser))
                         {
-                            myLists.add(cinp.getEmail());
+                            adapter.add(rate);
                             adapter.notifyDataSetChanged();
                         }
                     }
@@ -129,12 +124,12 @@ public class SearchProfileActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(SearchProfileActivity.this, ProfileActivity.class);
+            Intent intent = new Intent(DisplayRatesOtherUserActivity.this, ProfileActivity.class);
             startActivity(intent);
         }
         if (id == R.id.disconnect) {
             auth.signOut();
-            startActivity(new Intent(SearchProfileActivity.this, LoginActivity.class));
+            startActivity(new Intent(DisplayRatesOtherUserActivity.this, LoginActivity.class));
             finish();
         }
 
@@ -148,31 +143,31 @@ public class SearchProfileActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            Intent intent = new Intent(SearchProfileActivity.this, CinemasActivity.class);
+            Intent intent = new Intent(DisplayRatesOtherUserActivity.this, CinemasActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(SearchProfileActivity.this, SeancesMoviesActivity.class);
+            Intent intent = new Intent(DisplayRatesOtherUserActivity.this, SeancesMoviesActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(SearchProfileActivity.this, EventsActivity.class);
+            Intent intent = new Intent(DisplayRatesOtherUserActivity.this, EventsActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(SearchProfileActivity.this, StatisticsActivity.class);
+            Intent intent = new Intent(DisplayRatesOtherUserActivity.this, StatisticsActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_share) {
-            Intent intent = new Intent(SearchProfileActivity.this, ProfileActivity.class);
+            Intent intent = new Intent(DisplayRatesOtherUserActivity.this, ProfileActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_send) {
-            Intent intent = new Intent(SearchProfileActivity.this, SearchProfileActivity.class);
+            Intent intent = new Intent(DisplayRatesOtherUserActivity.this, SearchProfileActivity.class);
             startActivity(intent);
         }
         else if (id == R.id.disconnect) {
             auth.signOut();
-            startActivity(new Intent(SearchProfileActivity.this, LoginActivity.class));
+            startActivity(new Intent(DisplayRatesOtherUserActivity.this, LoginActivity.class));
             finish();
         }
 
@@ -187,7 +182,6 @@ public class SearchProfileActivity extends AppCompatActivity
         inflater.inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
 
 
 }

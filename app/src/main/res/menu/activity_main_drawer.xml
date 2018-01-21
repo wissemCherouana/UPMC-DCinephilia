@@ -3,11 +3,11 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_camera"
             android:icon="@drawable/maps"
             android:title="Cinémas de l'IDF" />
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_gallery"
             android:icon="@drawable/box_popcorn"
             android:title="Séances de films" />
 

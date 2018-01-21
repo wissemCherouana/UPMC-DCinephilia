@@ -143,9 +143,11 @@ public class NewsFragment extends Fragment {
         descriptionsSwitcher.setOutAnimation(getContext(), android.R.anim.fade_out);
         descriptionsSwitcher.setFactory(new NewsFragment.TextViewFactory(R.style.DescriptionTextView, false));
 
-        GetArticles(ThemoviedbApiAccess.GetArticlesQuery("Pitch Perfect 3"));
+        GetArticles(ThemoviedbApiAccess.GetArticlesQuery("The greatest showman"));
+        GetArticles(ThemoviedbApiAccess.GetArticlesQuery("Arrow"));
+        GetArticles(ThemoviedbApiAccess.GetArticlesQuery("Golden Globes"));
         GetArticles(ThemoviedbApiAccess.GetArticlesQuery("Star Wars Last Of Jedi"));
-        GetArticles(ThemoviedbApiAccess.GetArticlesQuery("Thor ragnarok"));
+        GetArticles(ThemoviedbApiAccess.GetArticlesQuery("Pitch Perfect 3"));
 
         return view;
     }

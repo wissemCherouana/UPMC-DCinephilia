@@ -30,10 +30,6 @@ import tpdev.upmc.dcinephila.Beans.Like;
 import tpdev.upmc.dcinephila.Beans.Rate;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 19/01/2018.
- */
-
 public class DisplayRatesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

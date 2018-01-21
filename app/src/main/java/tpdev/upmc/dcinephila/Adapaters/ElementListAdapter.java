@@ -1,11 +1,13 @@
 package tpdev.upmc.dcinephila.Adapaters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +29,6 @@ import java.util.List;
 import tpdev.upmc.dcinephila.Activities.DisplayElementsListsActivity;
 import tpdev.upmc.dcinephila.Beans.ElementList;
 import tpdev.upmc.dcinephila.R;
-
-/**
- * Created by Sourour Bnll on 03/01/2018.
- */
 
 public class ElementListAdapter extends ArrayAdapter<ElementList> {
     final int layoutResource;
@@ -66,8 +64,8 @@ public class ElementListAdapter extends ArrayAdapter<ElementList> {
             convertView = createView();
             notifyDataSetChanged();
         }
-        Typeface face= Typeface.createFromAsset(context.getAssets(), "font/Comfortaa-Light.ttf");
-        Typeface face_bold= Typeface.createFromAsset(context.getAssets(), "font/Comfortaa-Bold.ttf");
+        Typeface face = Typeface.createFromAsset(context.getAssets(), "font/Comfortaa-Light.ttf");
+        Typeface face_bold = Typeface.createFromAsset(context.getAssets(), "font/Comfortaa-Bold.ttf");
         ElementListAdapter.ViewHolder holder = (ElementListAdapter.ViewHolder) convertView.getTag();
         holder.textView.setTypeface(face_bold);
         holder.date.setTypeface(face);
@@ -75,13 +73,11 @@ public class ElementListAdapter extends ArrayAdapter<ElementList> {
         final ElementList element = getItem(position);
         holder.textView.setText(element.getName());
 
-        if(element.getType().equals("movie")){
-            holder.date.setText("Sorti le : "+ element.getDate());
+        if (element.getType().equals("movie")) {
+            holder.date.setText("Sorti le : " + element.getDate());
             holder.genre.setText("Film");
-        }
-        else if (element.getType().equals("shows"))
-        {
-            holder.date.setText("1ère diffusion : "+ element.getDate());
+        } else if (element.getType().equals("shows")) {
+            holder.date.setText("1ère diffusion : " + element.getDate());
             holder.genre.setText("Série TV");
         }
         Glide.with(getContext()).load(element.getUrl()).into(holder.image);
@@ -96,6 +92,13 @@ public class ElementListAdapter extends ArrayAdapter<ElementList> {
             }
         });
 
+        holder.trash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ElementList element = myLists.get(position);
+                removeElementFromList(element.getName(),position);
+            }
+        });
 
         return convertView;
     }
@@ -108,32 +111,51 @@ public class ElementListAdapter extends ArrayAdapter<ElementList> {
 
         ElementListAdapter.ViewHolder holder = new ElementListAdapter.ViewHolder();
         holder.textView = view.findViewById(R.id.movie_title);
-        holder.date=view.findViewById(R.id.date_of);
+        holder.date = view.findViewById(R.id.date_of);
         holder.genre = view.findViewById(R.id.genre);
-        holder.image=view.findViewById(R.id.poster);
-
-        // holder.trash=view.findViewById(R.id.deleteBtn);
+        holder.image = view.findViewById(R.id.poster);
+        holder.trash = view.findViewById(R.id.deleteBtn);
         view.setTag(holder);
         return view;
     }
 
-    private void removeList(final String t) {
-        mFirebaseInstance = FirebaseDatabase.getInstance();
-        mFirebaseDatabase = mFirebaseInstance.getReference("elements_lists/"+userRecord);
-        mFirebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    ElementList element = child.getValue(ElementList.class);
-                    if(element.getName().equals(t)){
-                        child.getRef().removeValue();
+    private void removeElementFromList(final String t, final int position) {
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+        adb.setTitle("Supprimer ? ");
+        adb.setMessage("Etes vous sûr de bien vouloir supprimer cet élément de cette liste ?");
+        adb.setNegativeButton("Cancel", null);
+        adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                mFirebaseInstance = FirebaseDatabase.getInstance();
+                mFirebaseDatabase = mFirebaseInstance.getReference("elements_lists/" + userRecord);
+                mFirebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        for (DataSnapshot child : snapshot.getChildren()) {
+                            ElementList element = child.getValue(ElementList.class);
+                            if (element.getName().equals(t)) {
+                                child.getRef().removeValue();
+                            }
+
+                        }
                     }
 
-                }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+                myLists.remove(position);
+                myLists.clear();
+                notifyDataSetChanged();
+
             }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
         });
+        adb.show();
+
+
+
     }
 
 }

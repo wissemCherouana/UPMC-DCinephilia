@@ -174,9 +174,11 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
                                     }
                                     @Override
                                     public void onNothingSelected(AdapterView<?> adapterView) {
+
                                     }
 
                                 });
+
                             }
 
                             @Override

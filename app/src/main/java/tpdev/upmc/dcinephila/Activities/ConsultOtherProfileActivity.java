@@ -20,14 +20,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import tpdev.upmc.dcinephila.Beans.Cinephile;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 13/01/2018.
- */
-
 public class ConsultOtherProfileActivity extends AppCompatActivity{
     private TextView firstname_other_profile, lastname_other_profile, email_other_profile, adress_value;
-    private ImageView lists_other,like_other ;
-    private TextView lists_other_profile, like_other_profile;
+    private ImageView lists_other,like_other,rate_other ;
+    private TextView lists_other_profile, like_other_profile,rate_other_profile;
     private String emailOtherUser;
     private CircleImageView actor_avatar;
     private DatabaseReference mFirebaseDatabase;
@@ -46,11 +42,14 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
         email_other_profile = (TextView) findViewById(R.id.email_other_profile);
         lists_other=(ImageView)findViewById(R.id.lists_other);
         like_other=(ImageView)findViewById(R.id.like_other);
+        rate_other=(ImageView)findViewById(R.id.rate_other) ;
         lists_other_profile =(TextView) findViewById(R.id.lists_other_profile);
         like_other_profile=(TextView) findViewById(R.id.like_other_profile);
+        rate_other_profile=(TextView)findViewById(R.id.rate_other_profile);
         adress_value = (TextView) findViewById(R.id.adress_value);
         lists_other_profile.setTypeface(face_bold);
         like_other_profile.setTypeface(face_bold);
+        rate_other_profile.setTypeface(face_bold);
         firstname_other_profile.setTypeface(face_bold);
         lastname_other_profile.setTypeface(face_bold);
         email_other_profile.setTypeface(face_bold);
@@ -71,6 +70,20 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                  startActivity(new Intent(ConsultOtherProfileActivity.this, DisplayListsOtherUserActivity.class).putExtra("emailOtherUser",emailOtherUser));
+            }
+        });
+
+        rate_other.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ConsultOtherProfileActivity.this, DisplayRatesOtherUserActivity.class).putExtra("emailOtherUser",emailOtherUser));
+            }
+        });
+
+        rate_other_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ConsultOtherProfileActivity.this, DisplayRatesOtherUserActivity.class).putExtra("emailOtherUser",emailOtherUser));
             }
         });
 

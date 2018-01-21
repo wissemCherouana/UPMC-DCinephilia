@@ -36,10 +36,6 @@ import tpdev.upmc.dcinephila.R;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by Sourour Bnll on 15/01/2018.
- */
-
 public class ElementLikeAdapter extends ArrayAdapter<Like> {
     final int layoutResource;
     private final List<Like> myLists;

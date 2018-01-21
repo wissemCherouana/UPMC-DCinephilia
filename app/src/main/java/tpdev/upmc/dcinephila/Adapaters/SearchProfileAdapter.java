@@ -22,10 +22,6 @@ import java.util.List;
 import tpdev.upmc.dcinephila.Activities.ConsultOtherProfileActivity;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 12/01/2018.
- */
-
 public class SearchProfileAdapter extends ArrayAdapter<String> {
 
     final int layoutResource;
@@ -33,7 +29,7 @@ public class SearchProfileAdapter extends ArrayAdapter<String> {
     private Context context;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
-    ArrayList<String> a=new ArrayList<String>();
+    ArrayList<String> a = new ArrayList<String>();
     // Get Firebase database instance
 
     private static class ViewHolder {
@@ -55,7 +51,7 @@ public class SearchProfileAdapter extends ArrayAdapter<String> {
         if (convertView == null) {
             convertView = createView();
         }
-        Typeface face= Typeface.createFromAsset(context.getAssets(), "font/Comfortaa-Light.ttf");
+        Typeface face = Typeface.createFromAsset(context.getAssets(), "font/Comfortaa-Light.ttf");
 
         SearchProfileAdapter.ViewHolder holder = (SearchProfileAdapter.ViewHolder) convertView.getTag();
         final String todo = getItem(position);
@@ -64,10 +60,8 @@ public class SearchProfileAdapter extends ArrayAdapter<String> {
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // a la place de ça je met un getExtra pour get le mail et voilà
-
                 final String mail = myLists.get(position).toString();
-                Intent intent = new Intent(context.getApplicationContext(), ConsultOtherProfileActivity.class).putExtra("consultProfile",mail);
+                Intent intent = new Intent(context.getApplicationContext(), ConsultOtherProfileActivity.class).putExtra("consultProfile", mail);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                 context.getApplicationContext().startActivity(intent);
             }

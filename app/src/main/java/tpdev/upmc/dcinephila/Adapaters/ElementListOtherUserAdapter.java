@@ -23,10 +23,6 @@ import tpdev.upmc.dcinephila.Activities.DisplayElementsListOtherUserActivity;
 import tpdev.upmc.dcinephila.Beans.ElementList;
 import tpdev.upmc.dcinephila.R;
 
-/**
- * Created by Sourour Bnll on 14/01/2018.
- */
-
 public class ElementListOtherUserAdapter extends ArrayAdapter<ElementList> {
     final int layoutResource;
     private final List<ElementList> myLists;
@@ -63,13 +59,11 @@ public class ElementListOtherUserAdapter extends ArrayAdapter<ElementList> {
         ElementListOtherUserAdapter.ViewHolder holder = (ElementListOtherUserAdapter.ViewHolder) convertView.getTag();
         final ElementList element = getItem(position);
         holder.textView.setText(element.getName());
-        if(element.getType().equals("movie")){
-            holder.date.setText("Sorti le : "+ element.getDate());
+        if (element.getType().equals("movie")) {
+            holder.date.setText("Sorti le : " + element.getDate());
             holder.genre.setText("Film");
-        }
-        else if (element.getType().equals("shows"))
-        {
-            holder.date.setText("1ère diffusion : "+ element.getDate());
+        } else if (element.getType().equals("shows")) {
+            holder.date.setText("1ère diffusion : " + element.getDate());
             holder.genre.setText("Série TV");
         }
         Glide.with(getContext()).load(element.getUrl()).into(holder.image);
@@ -94,8 +88,8 @@ public class ElementListOtherUserAdapter extends ArrayAdapter<ElementList> {
         View view = inflater.inflate(layoutResource, null);
         ElementListOtherUserAdapter.ViewHolder holder = new ElementListOtherUserAdapter.ViewHolder();
         holder.textView = view.findViewById(R.id.movie_title);
-        holder.date=view.findViewById(R.id.date_of);
-        holder.image=view.findViewById(R.id.poster);
+        holder.date = view.findViewById(R.id.date_of);
+        holder.image = view.findViewById(R.id.poster);
         holder.genre = view.findViewById(R.id.genre);
         view.setTag(holder);
         return view;

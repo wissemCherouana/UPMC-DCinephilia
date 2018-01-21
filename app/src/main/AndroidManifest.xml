@@ -38,6 +38,7 @@
         <activity android:name=".Activities.EventsActivity" />
         <activity android:name=".Activities.CreateEventActivity" />
         <activity android:name=".Activities.CinemasActivity" />
+        <activity android:name=".Activities.DisplayRatesOtherUserActivity" />
         <activity android:name=".Activities.DisplayListsActivity" />
         <activity android:name=".Activities.DisplayElementsListsActivity" />
         <activity android:name=".Activities.SearchProfileActivity" />

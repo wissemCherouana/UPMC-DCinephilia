@@ -147,7 +147,7 @@ public class SeancesMoviesActivity extends AppCompatActivity
         };
 
         caldroidFragment.setCaldroidListener(listener);
-        //AddSeancesMovies();
+       // AddSeancesMovies();
 
     }
 
@@ -156,16 +156,16 @@ public class SeancesMoviesActivity extends AppCompatActivity
         seancesMoviesReference = DCinephiliaInstance.getReference("seances_movies");
         ArrayList<Seance> seancesList = new ArrayList<>();
 
-        seancesList.add(new Seance (181808,"Star Wars, épisode VIII : Les Derniers Jedi","/ijAC17I7X4xCrKxtp1JUc2YBGuM.jpg","26-12-2017 13:55","UGC CINE CITE LES HALLES"));
-        seancesList.add(new Seance (181808,"Star Wars, épisode VIII : Les Derniers Jedi","/ijAC17I7X4xCrKxtp1JUc2YBGuM.jpg","27-12-2017 17:30","GRAND REX"));
-        seancesList.add(new Seance (181808,"Star Wars, épisode VIII : Les Derniers Jedi","/ijAC17I7X4xCrKxtp1JUc2YBGuM.jpg","30-12-2017 21:50","GAUMONT OPERA CAPUCINES"));
-        seancesList.add(new Seance (181808,"Star Wars, épisode VIII : Les Derniers Jedi","/ijAC17I7X4xCrKxtp1JUc2YBGuM.jpg","29-12-2017 19:15","L ALCAZAR"));
-        seancesList.add(new Seance (392044,"Le Crime de l'Orient-Express","/a8AwyQ6ueGL9YcddZ6nrZUlRzNt.jpg","27-12-2017 19:50","MK2 ODEON"));
-        seancesList.add(new Seance (392044,"Le Crime de l'Orient-Express","/a8AwyQ6ueGL9YcddZ6nrZUlRzNt.jpg","26-12-2017 14:45","UGC LYON BASTILLE"));
-        seancesList.add(new Seance (353616,"Pitch Perfect 3","/hQriQIpHUeh66I89gypFXtqEuVq.jpg","27-12-2017 15:40","GAUMONT PARNASSE"));
-        seancesList.add(new Seance (353616,"Pitch Perfect 3","/hQriQIpHUeh66I89gypFXtqEuVq.jpg","29-12-2017 20:00","PATHE WEPLER"));
-        seancesList.add(new Seance (398933,"Tout là-haut","/sEWJdTh3FF0egFX9KOkB7JK9igx.jpg","27-12-2017 18:00","MEGARAMA 1"));
-        seancesList.add(new Seance (398933,"Tout là-haut","/sEWJdTh3FF0egFX9KOkB7JK9igx.jpg","29-12-2017 18:20","ARIEL HAUTS DE RUEIL"));
+        seancesList.add(new Seance (316029,"The Greatest Showman","/dfhztJRiElqmYW4kpvjYe1gENsD.jpg","24-01-2018 13:55","UGC CINE CITE LES HALLES"));
+        seancesList.add(new Seance (316029,"The Greatest Showman","/dfhztJRiElqmYW4kpvjYe1gENsD.jpg","26-01-2018 17:30","GRAND REX"));
+        seancesList.add(new Seance (316029,"The Greatest Showman","/dfhztJRiElqmYW4kpvjYe1gENsD.jpg","27-01-2018 21:50","GAUMONT OPERA CAPUCINES"));
+        seancesList.add(new Seance (316029,"The Greatest Showman","/dfhztJRiElqmYW4kpvjYe1gENsD.jpg","01-02-2018 19:15","L ALCAZAR"));
+        seancesList.add(new Seance (399035,"The Passenger","/7iKK98bzU7acrR92XNtIaNKiffU.jpg","24-01-2018 19:50","MK2 ODEON"));
+        seancesList.add(new Seance (399035,"The Passenger","/7iKK98bzU7acrR92XNtIaNKiffU.jpg","27-01-2018 14:45","UGC LYON BASTILLE"));
+        seancesList.add(new Seance (429351,"Horse Soldiers","/xtNz8ZYKYoJtjnif3iHiGm80GkI.jpg","25-01-2018 15:40","GAUMONT PARNASSE"));
+        seancesList.add(new Seance (353616,"Pitch Perfect 3","/hQriQIpHUeh66I89gypFXtqEuVq.jpg","28-01-2018 20:00","PATHE WEPLER"));
+        seancesList.add(new Seance (396371,"Molly's Game","/xtNz8ZYKYoJtjnif3iHiGm80GkI.jpg","24-01-2018 18:00","MEGARAMA 1"));
+        seancesList.add(new Seance (396371,"Molly's Game","/xtNz8ZYKYoJtjnif3iHiGm80GkI.jpg","29-01-2018 18:20","ARIEL HAUTS DE RUEIL"));
 
         ArrayList<String> date_seances = new ArrayList<>();
 

@@ -11,7 +11,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -92,26 +94,41 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     for (DataSnapshot c : child.getChildren()) {
                         if (c.getValue().equals(userRecord)) {
                             if (!firstname_update.getText().toString().equals("")) {
-                                child.getRef().child("firstname").setValue(firstname_update.getText().toString().toLowerCase());
+                                child.getRef().child("firstname").setValue(firstname_update.getText().toString());
                             }
                             if (!lastname_update.getText().toString().equals("")) {
-                                child.getRef().child("lastname").setValue(lastname_update.getText().toString().toLowerCase());
+                                child.getRef().child("lastname").setValue(lastname_update.getText().toString());
                             }
 
                             if (!bio_update.getText().toString().equals("")) {
                                 child.getRef().child("description").setValue(bio_update.getText().toString());
                             }
 
-                            if (!password_update.getText().toString().equals("") && verifypassword(password_update.getText().toString(), confirmation_update.getText().toString())) {
-                                child.getRef().child("password").setValue(password_update.getText().toString());
+                            if ((!password_update.getText().toString().equals("")) && password_update.length() < 6) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Le mot de passe doit contenir au moins 6 caractéres !",
+                                        Toast.LENGTH_LONG).show();
+                            }else{
+                                if (!password_update.getText().toString().equals("")) {
+                                    if(verifypassword(password_update.getText().toString(), confirmation_update.getText().toString())){
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        user.updatePassword(password_update.getText().toString());
+                                    }else{
+                                        Toast.makeText(getApplicationContext(),
+                                                "Erreur mot de passe ",
+                                                Toast.LENGTH_LONG).show();
+                                    }
+
+                                }
                             }
                             child.getRef().child("gender").setValue(gender);
                             Toast.makeText(getApplicationContext(),
                                     "Modifications prises en compte !",
                                     Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(UpdateProfileActivity.this, ProfileActivity.class);
-                            startActivity(intent);
+                            //Intent intent = new Intent(UpdateProfileActivity.this, ProfileActivity.class);
+                            //startActivity(intent);
+                            finish();
                             break;
                         }
                     }
