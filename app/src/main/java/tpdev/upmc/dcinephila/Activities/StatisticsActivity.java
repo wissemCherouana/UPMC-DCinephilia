@@ -368,7 +368,7 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
                     if (comments.get(i).getCinephile_id().equals(cinephile_id.getFirstname() +
                             " " + cinephile_id.getLastname().toUpperCase()))
                     {
-                        count2++; 
+                        count2++;
                         boolean found = false;
                         Iterator it = comments_map.entrySet().iterator();
                         while (!found && it.hasNext()) {
