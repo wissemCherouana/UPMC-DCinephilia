@@ -69,7 +69,7 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
     private static String TAG = StatisticsActivity.class.getSimpleName();
     private Map<String, Integer> likes_map ;
     private Map<Integer, Integer> comments_map ;
-    private int count=0,count_comments=0;
+    private int count=0,count_comments=0, count2=0;
     private ArrayList<Entry> entries;
     private ArrayList<String> labels;
     private TextView text1, text2;
@@ -355,7 +355,7 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
                         comments.add(comment);
                     }
                 }
-                commentaires.setText(comments.size() + " comments");
+
 
                 for (int i=0; i<comments.size();i++)
                 {
@@ -368,6 +368,7 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
                     if (comments.get(i).getCinephile_id().equals(cinephile_id.getFirstname() +
                             " " + cinephile_id.getLastname().toUpperCase()))
                     {
+                        count2++; 
                         boolean found = false;
                         Iterator it = comments_map.entrySet().iterator();
                         while (!found && it.hasNext()) {
@@ -420,6 +421,7 @@ public class StatisticsActivity extends AppCompatActivity implements NavigationV
                         lineChart.setDescription("");
                         lineChart.setData(data);
                         lineChart.invalidate();
+                        commentaires.setText(count2 + " comments");
                     }
                 }
             }
