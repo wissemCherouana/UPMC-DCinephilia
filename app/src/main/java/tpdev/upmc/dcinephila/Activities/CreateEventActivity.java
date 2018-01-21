@@ -37,6 +37,12 @@ import tpdev.upmc.dcinephila.Beans.Rate;
 import tpdev.upmc.dcinephila.Beans.Seance;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows a cinephile to create an event, a meeting between a specific number of cinephiles
+ * in a cinema of île-de-France in order to watch a movie
+ *
+ */
+
 public class CreateEventActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView event_text;
@@ -101,8 +107,11 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
 
     }
 
+    // get movies seances, places, time to display them in different spinners
+    // and let the cinephile choose those interests him
     public void GetSeances()
     {
+        // get the list of seance
         seancesMoviesReference = DCinephiliaInstance.getReference("seances_movies");
         seancesMoviesReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -113,6 +122,7 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
                     {
                         for (DataSnapshot snapshot : singleSnapshot.getChildren()) {
                             Seance seance = snapshot.getValue(Seance.class);
+                            // add the seance to the list
                             seances.add(seance);
                             if (!ItContainsMovie(seance.getMovie(), movies_list))
                             {
@@ -122,6 +132,7 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
                         }
                     }
                 }
+                // et the list of seance of the chosen movie
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.spinner_item, movies_list);
                 dataAdapter.setDropDownViewResource(R.layout.drowdown_spinner);
                 event_movie.setAdapter(dataAdapter);
@@ -138,6 +149,7 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
                             }
                         }
 
+                        // get the cinemas of the chosen seance
                         ArrayAdapter<String> seancesAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.spinner_item, seances_list);
                         seancesAdapter.setDropDownViewResource(R.layout.drowdown_spinner);
                         event_seance.setAdapter(seancesAdapter);
@@ -216,8 +228,12 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
         return found;
     }
 
+    /**
+     * this method creates a event and dtores it in the database
+     */
     public void CreateEvent()
     {
+        // get the list of cinephiles to know who is creating the event
         cinephilesReference = DCinephiliaInstance.getReference("cinephiles");
         cinephilesReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -230,15 +246,21 @@ public class CreateEventActivity extends AppCompatActivity implements Navigation
                     DataSnapshot snapshot_next = iterator.next();
                     Cinephile cinephile = snapshot_next.getValue(Cinephile.class);
 
+                    // retrieve created_by parameter of the event
                     if (cinephile.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
                         event_created_by = cinephile;
                     }
                 }
+                // get the list of events
                 eventsReference = DCinephiliaInstance.getReference("events");
                 String event_id =  eventsReference.push().getKey();
+
+                // create a new event
                 Event event = new Event(event_id, event_name.getText().toString(), event_description.getText().toString(),
                         selected_seance, event_created_by, Integer.valueOf(event_limit.getText().toString()));
+
+                // push the created event to the database
                 eventsReference.push().setValue(event);
             }
 

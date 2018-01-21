@@ -70,6 +70,20 @@ import tpdev.upmc.dcinephila.DesignClasses.RecyclerTouchListener;
 import tpdev.upmc.dcinephila.DesignClasses.Utility;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity gives the cinephile all information about a movie : Trailer, Synopsis, Casting, Images,
+ * SimilarMovies..
+ * The cinephile can see all the images of the movie in a slider
+ * The cinephile can like / dislike the movie
+ * The cinephile can rate the movie
+ * The cinephile can add the movie to one of his lists
+ * The cinephile can post a comment
+ *
+ * Use of themoviedbAPi to get all the details of the movie
+ * USe of Youtube API to display the trailer
+ *
+ */
+
 public class MovieDetailsActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     private TextView movie_title, movie_overview, movie_release_date, movie_director, movie_genres,
@@ -1001,33 +1015,13 @@ public class MovieDetailsActivity extends YouTubeBaseActivity implements YouTube
 
             }
         });
-      /*  my_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-
-               spinner_text=my_spinner.getSelectedItem().toString();
-               System.out.println(" the spinner "+ spinner_text);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-
-            }
-        });*/
 
     }
 
     public void addElementList(final int movie_id, final String spinner_text){
-        // gerer les doublons ici
-        mFirebaseDatabase = mFirebaseInstance.getInstance().getReference("elements_lists");
+         mFirebaseDatabase = mFirebaseInstance.getInstance().getReference("elements_lists");
         ElementList element_list = new ElementList(String.valueOf(movie_id),"movie",url_movie,movie,release_date,spinner_text,userRecord);
 
-        // pushing cinephile to 'cinephiles' node using the cinephileId
-        // mFirebaseDatabase.child(email ).setValue(cinephile);
         mFirebaseDatabase.child(userUid).push().setValue(element_list);
 
     }

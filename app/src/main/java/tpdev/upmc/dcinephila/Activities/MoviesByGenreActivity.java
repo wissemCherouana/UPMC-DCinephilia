@@ -51,6 +51,12 @@ import tpdev.upmc.dcinephila.DesignClasses.AppController;
 import tpdev.upmc.dcinephila.DesignClasses.RecyclerTouchListener;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity gives the cinephile some movies having the same genre of another movie when he clicks on a
+ * genre tag
+ *
+ */
+
 public class MoviesByGenreActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView search_text;
@@ -120,6 +126,10 @@ public class MoviesByGenreActivity extends AppCompatActivity implements Navigati
         GetMoviesByGenre(ThemoviedbApiAccess.MoviesByGenre(genre_id));
     }
 
+    /**
+     * This method allows to get some movies by genre
+     * @param urlJsonObj the url of themoviedbapi
+     */
     private void GetMoviesByGenre(final String urlJsonObj) {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,

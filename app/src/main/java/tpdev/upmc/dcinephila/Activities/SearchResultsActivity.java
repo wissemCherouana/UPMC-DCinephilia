@@ -53,6 +53,13 @@ import tpdev.upmc.dcinephila.DesignClasses.AppController;
 import tpdev.upmc.dcinephila.DesignClasses.RecyclerTouchListener;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows the cinephile to make a multiple search
+ * Results will be displayed by category : films, shows then stars
+ *
+ * The search feature is managed themoviedbapi
+ */
+
 public class SearchResultsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView search_text, movies_text, shows_text, stars_text;

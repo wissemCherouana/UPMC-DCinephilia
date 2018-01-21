@@ -43,6 +43,13 @@ import tpdev.upmc.dcinephila.Beans.GeographicalPosition;
 import tpdev.upmc.dcinephila.DesignClasses.AppController;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows a cinephile who wants to attend an event to get the itinerary to the cinema
+ * where it will be organized
+ *
+ * Use of Google Maps API
+ */
+
 public class CinemaEventActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
     private static String TAG = CinemasActivity.class.getSimpleName();
@@ -79,7 +86,12 @@ public class CinemaEventActivity extends AppCompatActivity implements OnMapReady
 
     }
 
-
+    /**
+     * This application retrieves cordinates of a specific cinema of Ile-de-France
+     * in order to display it on the map when the cinephile clicks on the place of an event
+     * @param urlJsonObj the URI of the API of Open Data Ile de France
+     * @param cinema the name of the cinema
+     */
     public void GetCinemaCordinates(final String urlJsonObj, final String cinema) {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -96,15 +108,21 @@ public class CinemaEventActivity extends AppCompatActivity implements OnMapReady
                     {
                         JSONObject cinema_json = (JSONObject) cinemas_json.get(i);
                         JSONObject cinema_infos = (JSONObject) cinema_json.getJSONObject("fields");
+
+                        // get the cinema's information
                         String cinema_name = cinema_infos.getString("enseigne");
                         String cinema_address = cinema_infos.getString("adrnumvoie");
                         String town = cinema_infos.getString("ville");
+
+                        // retrieve latitude and longitude of the cinema
                         double cinema_longitude = cinema_infos.getDouble("lng");
                         double cinema_latitude = cinema_infos.getDouble("lat");
+
                         if (cinema_name.equals(cinema))
                         {
                             GeographicalPosition position = new GeographicalPosition(cinema_name,town, cinema_address,
                                     cinema_longitude,cinema_latitude);
+                            // add marker on the map
                             mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(position.getCinema_latitude(), position.getCinema_longitude()))
                                     .title(position.getCinama_name())
@@ -139,6 +157,7 @@ public class CinemaEventActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        // setting up the map with the marker of the chosen cinema
         mMap = googleMap;
         ActivityCompat.requestPermissions(this, new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,

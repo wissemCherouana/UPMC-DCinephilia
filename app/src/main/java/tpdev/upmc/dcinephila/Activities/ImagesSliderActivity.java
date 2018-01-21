@@ -27,6 +27,10 @@ import tpdev.upmc.dcinephila.APIs.ThemoviedbApiAccess;
 import tpdev.upmc.dcinephila.DesignClasses.AppController;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows a cinephile to see images of movies, shows or stars much bigger in a slider
+ */
+
 public class ImagesSliderActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,
         ViewPagerEx.OnPageChangeListener{
 
@@ -61,6 +65,11 @@ public class ImagesSliderActivity extends AppCompatActivity implements BaseSlide
     }
 
 
+    /**
+     *
+     * @param urlJsonObj the url of images retrived from themoviedbapi
+     * @param element_title the title of the movie / show
+     */
     private void GetElementImages(final String urlJsonObj, final String element_title) {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -72,15 +81,19 @@ public class ImagesSliderActivity extends AppCompatActivity implements BaseSlide
 
                 try {
 
+                    // get the images
                     JSONArray element_backdrops = (JSONArray) response.getJSONArray("backdrops");
 
                     for (int i=0; i<element_backdrops.length(); i++)
                     {
                         JSONObject image_json = (JSONObject) element_backdrops.get(i);
+                        // get the url of the image
                         String image_url = "https://image.tmdb.org/t/p/w780" + image_json.getString("file_path");
+                       //add the image to the list
                         if (!image_json.getString("file_path").equals("null"))
                             imagesList.add(image_url);
                     }
+                    // create the slider and customize it with different parameters
                     sliderLayout.stopAutoCycle();
                     for(int i=0; i<imagesList.size(); i++){
 
@@ -120,6 +133,11 @@ public class ImagesSliderActivity extends AppCompatActivity implements BaseSlide
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     *
+     * @param urlJsonObj the url of images retrived from themoviedbapi
+     * @param actor_name the name of the actor
+     */
     private void GetActorImages(final String urlJsonObj, final String actor_name) {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,

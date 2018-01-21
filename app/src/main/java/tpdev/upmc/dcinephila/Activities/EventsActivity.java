@@ -29,6 +29,11 @@ import tpdev.upmc.dcinephila.Beans.Event;
 import tpdev.upmc.dcinephila.DesignClasses.Utils;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows a cinephile to consult the different events cretaed by hi or other cinephiles
+ * It also allows him to participate to an event that interests him
+ */
+
 public class EventsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private HorizontalInfiniteCycleViewPager eventsRecyclerView;
@@ -64,9 +69,12 @@ public class EventsActivity extends AppCompatActivity implements NavigationView.
 
     }
 
-
+    /**
+     * This method gets all the events created by cinephiles
+     */
     public void GetEvents(){
 
+        // get the list of all events
         eventsReference = DCinephiliaInstance.getReference("events");
         eventsReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -74,6 +82,7 @@ public class EventsActivity extends AppCompatActivity implements NavigationView.
                 eventsList = new ArrayList<Utils.EventItem>();
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren())
                 {
+                    // get event's information
                     Event event = singleSnapshot.getValue(Event.class);
                     String event_id = event.getEvent_id();
                     String event_name = event.getEvent_name();
@@ -88,11 +97,13 @@ public class EventsActivity extends AppCompatActivity implements NavigationView.
                     String event_created_by = event.getEvent_created_by().getFirstname() + " " +
                             event.getEvent_created_by().getLastname().toUpperCase();
 
+                    // create a new event item
                     Utils.EventItem eventItem = new Utils.EventItem(event_id, event_name,event_movie,event_poster, event_description,event_date,
                             event_hour,event_place,event_limit,event_created_by);
-
+                    // add it to the list of events
                     eventsList.add(eventItem);
                 }
+                // set the adapter of the recyclerview of events
                 eventsRecyclerView.setAdapter(new EventAdapter(getApplicationContext(),eventsList));
                 eventsRecyclerView.notifyDataSetChanged();
             }

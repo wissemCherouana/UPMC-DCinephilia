@@ -41,6 +41,14 @@ import tpdev.upmc.dcinephila.DesignClasses.Timeline.OrderStatus;
 import tpdev.upmc.dcinephila.DesignClasses.Timeline.Orientation;
 import tpdev.upmc.dcinephila.DesignClasses.Timeline.TimeLineModel;
 
+/**
+ * This activity allows the cinephile to consult the episodes of a specific season of a tv show
+ * Episodes are displayed in the form of a timeline where each episode os characterized by a picture and a small
+ * overview
+ *
+ * We get the inspiration to build the timeline from an open source project on github
+ */
+
 public class SeasonEpisodesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

@@ -20,6 +20,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import tpdev.upmc.dcinephila.Beans.Cinephile;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows the cinephile to display his profile
+ *
+ */
+
 public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;

@@ -29,6 +29,10 @@ import tpdev.upmc.dcinephila.Adapaters.ElementRateAdapter;
 import tpdev.upmc.dcinephila.Beans.Rate;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows the cinephile to consult the movies that were rated by another cinephile
+ */
+
 public class DisplayRatesOtherUserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

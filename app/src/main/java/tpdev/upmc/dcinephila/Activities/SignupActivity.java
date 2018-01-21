@@ -27,6 +27,11 @@ import tpdev.upmc.dcinephila.Beans.Cinephile;
 import tpdev.upmc.dcinephila.R;
 
 
+/**
+ * This activity allows a cinephile to signup in DCinephilia
+ * The signup feature is managed by FirebaseAuth (Email & Password)
+ */
+
 public class SignupActivity extends AppCompatActivity {
 
     private TextView textview;

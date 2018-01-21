@@ -24,6 +24,10 @@ import tpdev.upmc.dcinephila.Beans.Cinephile;
 import tpdev.upmc.dcinephila.R;
 import tpdev.upmc.dcinephila.databinding.ActivityUpdateProfileBinding;
 
+/**
+ * This activity allows the cinephile to update the information of his profile
+ */
+
 public class UpdateProfileActivity extends AppCompatActivity {
     Cinephile user;
     private DatabaseReference mFirebaseDatabase;

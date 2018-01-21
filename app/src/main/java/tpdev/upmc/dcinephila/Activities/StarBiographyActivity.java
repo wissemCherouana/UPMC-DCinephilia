@@ -43,6 +43,10 @@ import tpdev.upmc.dcinephila.DesignClasses.MySpannable;
 import tpdev.upmc.dcinephila.DesignClasses.RecyclerTouchListener;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows the cinephile to consult the biography of a star
+ */
+
 public class StarBiographyActivity extends AppCompatActivity {
 
     private TextView actor_name, birthday_text, birthday_place_text, biopgraphy, movies_text, movies_number,

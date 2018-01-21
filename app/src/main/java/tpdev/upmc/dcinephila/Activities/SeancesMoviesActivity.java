@@ -42,6 +42,14 @@ import tpdev.upmc.dcinephila.DesignClasses.Calcoid.CaldroidListener;
 import tpdev.upmc.dcinephila.DesignClasses.RecyclerTouchListener;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows a cinephile to see the seances of movies wich will play during the month
+ * the seances are displayed on a calendar, when he clicks on a specific cell (date), he gets all the seances
+ * of the chosen day
+ *
+ * The calendar was inspired from an open source project on github and was adopted to the need
+ */
+
 public class SeancesMoviesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -151,6 +159,7 @@ public class SeancesMoviesActivity extends AppCompatActivity
 
     }
 
+    // no api exists so we fill the seances manually
     public void AddSeancesMovies()
     {
         seancesMoviesReference = DCinephiliaInstance.getReference("seances_movies");

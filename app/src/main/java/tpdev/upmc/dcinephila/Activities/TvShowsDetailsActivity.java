@@ -75,6 +75,20 @@ import tpdev.upmc.dcinephila.DesignClasses.RecyclerTouchListener;
 import tpdev.upmc.dcinephila.DesignClasses.Utility;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity gives the cinephile all information about a show : Trailer, Synopsis, Casting, Seasons, Images,
+ * SimilarShows..
+ * The cinephile can see all the images of the tv show in a slider
+ * The cinephile can like / dislike the show
+ * The cinephile can rate the show
+ * The cinephile can add the show to one of his lists
+ * The cinephile can post a comment
+ *
+ * Use of themoviedbAPi to get all the details of the show
+ * USe of Youtube API to display the trailer
+ *
+ */
+
 public class TvShowsDetailsActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     private TextView show_title, show_overview, show_first_air_date, show_created_by, show_number_of_seasons,

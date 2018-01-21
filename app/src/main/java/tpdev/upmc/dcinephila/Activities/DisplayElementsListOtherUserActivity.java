@@ -30,6 +30,11 @@ import tpdev.upmc.dcinephila.Adapaters.ElementListOtherUserAdapter;
 import tpdev.upmc.dcinephila.Beans.ElementList;
 import tpdev.upmc.dcinephila.R;
 
+
+/**
+ * This activity allows the cinephile to consult the content of lists (movies and shows) of another cinephile
+ */
+
 public class DisplayElementsListOtherUserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

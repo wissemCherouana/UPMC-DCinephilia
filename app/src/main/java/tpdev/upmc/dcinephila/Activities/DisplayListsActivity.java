@@ -38,6 +38,14 @@ import tpdev.upmc.dcinephila.Adapaters.ListsAdapter;
 import tpdev.upmc.dcinephila.Beans.ListCinephile;
 import tpdev.upmc.dcinephila.R;
 
+
+/**
+ * This activity allows the cinephile to create new lists
+ * The cinephile can also consult all his lists
+ * The cinephile can delete one or many lists
+ *
+ */
+
 public class DisplayListsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

@@ -31,6 +31,11 @@ import tpdev.upmc.dcinephila.Adapaters.SearchProfileAdapter;
 import tpdev.upmc.dcinephila.Beans.Cinephile;
 import tpdev.upmc.dcinephila.R;
 
+
+/**
+ * This activity allows the cinephile to look for other cinephiles by firstname, lastname or even email
+ */
+
 public class SearchProfileActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private List<String> myLists;

@@ -58,6 +58,14 @@ import tpdev.upmc.dcinephila.Beans.Rate;
 import tpdev.upmc.dcinephila.DesignClasses.AppController;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows the cinephile to get an idea about all his activities in the applications
+ * Thus some statistcs are displayed such as the total number of likes, rates and comments
+ * And some graphs as the number of likes by movie's genre and the number of comments per month
+ *
+ * Use of MPAndroidChart to display the interactive graphs
+ */
+
 public class StatisticsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DatabaseReference likedElementsReference, ratedElementsReference, commentsReference, cinephilesReference;

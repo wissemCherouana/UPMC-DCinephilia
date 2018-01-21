@@ -48,6 +48,14 @@ import tpdev.upmc.dcinephila.Beans.GeographicalPosition;
 import tpdev.upmc.dcinephila.DesignClasses.AppController;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows a cinephile to see all the cinemas of île-de-France in a map with markers
+ * The cinephile can also get easily the itinerary to a specific cinema
+ *
+ * Use of Google Maps API
+ *
+ */
+
 public class CinemasActivity extends AppCompatActivity
         implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
@@ -85,6 +93,12 @@ public class CinemasActivity extends AppCompatActivity
 
     }
 
+    /**
+     *
+     * This application retrieves cordinates of a all cinemas of Ile-de-France and save them in a list
+     * in order to display them on the map
+     * @param urlJsonObj the URI of the API of Open Data Ile de France
+     */
     public void GetCinemasCordinates(final String urlJsonObj) {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -101,9 +115,13 @@ public class CinemasActivity extends AppCompatActivity
                     {
                         JSONObject cinema_json = (JSONObject) cinemas_json.get(i);
                         JSONObject cinema_infos = (JSONObject) cinema_json.getJSONObject("fields");
+
+                        // get cinema's information
                         String cinema_name = cinema_infos.getString("enseigne");
                         String cinema_address = cinema_infos.getString("adrnumvoie");
                         String town = cinema_infos.getString("ville");
+
+                        // get longitude and latitude of the cinema
                         double cinema_longitude = cinema_infos.getDouble("lng");
                         double cinema_latitude = cinema_infos.getDouble("lat");
                         GeographicalPosition position = new GeographicalPosition(cinema_name,town, cinema_address,
@@ -111,6 +129,7 @@ public class CinemasActivity extends AppCompatActivity
                         cinemasCordinatesList.add(position);
                     }
 
+                    // for each cinema, use the stocked cordinates to create a map marker
                     for (int i=0; i<cinemasCordinatesList.size(); i++)
                     {
                         GeographicalPosition position = cinemasCordinatesList.get(i);
@@ -147,6 +166,7 @@ public class CinemasActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        // setting up the map
         mMap = googleMap;
         ActivityCompat.requestPermissions(this, new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,

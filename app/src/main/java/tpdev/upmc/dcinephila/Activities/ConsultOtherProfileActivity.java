@@ -20,6 +20,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import tpdev.upmc.dcinephila.Beans.Cinephile;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows a cinephile to consult te profile of another profile after searching him
+ */
+
 public class ConsultOtherProfileActivity extends AppCompatActivity{
     private TextView firstname_other_profile, lastname_other_profile, email_other_profile, adress_value;
     private ImageView lists_other,like_other,rate_other ;
@@ -56,8 +60,6 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
         adress_value.setTypeface(face_bold);
         actor_avatar = (CircleImageView) findViewById(R.id.avatar);
         GetUserInformations();
-
-
 
         lists_other.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,14 +106,21 @@ public class ConsultOtherProfileActivity extends AppCompatActivity{
 
     }
 
-
+    /**
+     * This method allows to retrieve all information about another cinephile
+     */
     private void GetUserInformations() {
+
+        // get the list of cinephiles
         mFirebaseDatabase = mFirebaseInstance.getReference("cinephiles");
         mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     for(DataSnapshot c : child.getChildren()){
+
+                        // if the email corresponds to the chosen cinephile email
+                        // then retrieve his information and construct the profile
                         if(c.getValue().equals(emailOtherUser)){
                             Cinephile cinp = child.getValue(Cinephile.class);
                             firstname_other_profile.setText(cinp.getFirstname());

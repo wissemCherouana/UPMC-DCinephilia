@@ -20,6 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows a cinephile to login to DCinephilia
+ * The login feature is managed by FirebaseAuth
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
     private TextView textview;

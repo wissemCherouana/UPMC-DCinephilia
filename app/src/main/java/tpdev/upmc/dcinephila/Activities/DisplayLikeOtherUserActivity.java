@@ -28,6 +28,11 @@ import tpdev.upmc.dcinephila.Adapaters.ElementLikeAdapter;
 import tpdev.upmc.dcinephila.Beans.Like;
 import tpdev.upmc.dcinephila.R;
 
+
+/**
+ * This activity allows the cinephile to consult the movies that were liked by another cinephile
+ */
+
 public class DisplayLikeOtherUserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

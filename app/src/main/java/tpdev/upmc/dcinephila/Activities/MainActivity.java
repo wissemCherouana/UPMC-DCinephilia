@@ -32,6 +32,16 @@ import tpdev.upmc.dcinephila.Fragments.NewsFragment;
 import tpdev.upmc.dcinephila.Fragments.TvshowsFragment;
 import tpdev.upmc.dcinephila.R;
 
+
+/**
+ * This activity allows a cinephile to navigate between 3 tabs : films, shows and news
+ * Each tab contains a group of elements
+ * 1/ Films : NowPlayingMovies, UpcomingMovies and TopRatedMovies
+ * 2/ Shows : NowPlayingShows, TopRatedShows
+ * 3/ News displayed in a caroussel about films, shows and stars
+ *
+ */
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

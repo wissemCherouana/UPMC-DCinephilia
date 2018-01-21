@@ -18,6 +18,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows a cinephile to reset his password if he forget it
+ * an email will be sent to him in order to change it
+ * This feature is managed by FirebaseAuth
+ */
+
 public class ResetPasswordActivity extends AppCompatActivity {
     private EditText inputEmail;
     private TextView textview;

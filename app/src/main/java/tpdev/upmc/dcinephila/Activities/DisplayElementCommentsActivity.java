@@ -36,6 +36,10 @@ import tpdev.upmc.dcinephila.Beans.Like;
 import tpdev.upmc.dcinephila.DesignClasses.Utility;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows the cinephile to display all the comments that where posted on a movie or a tv show
+ */
+
 public class DisplayElementCommentsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -105,8 +109,15 @@ public class DisplayElementCommentsActivity extends AppCompatActivity
         else if (element_genre.equals("show")) DisplayComments("shows_comments", element_id);
     }
 
+    /**
+     * This method adds a comment about a movie or a show
+     * @param element_genre comment about a movie or a show
+     * @param comment_content the content of the comment
+     * @param movie_id the id of the movie or the show
+     */
     public void AddCommentAboutMovie(final String element_genre, final String comment_content, final int movie_id)
     {
+        // get the list of cinephiles in order to get who posts the comment
         cinephilesReference = DCinephiliaInstance.getReference("cinephiles");
         cinephilesReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -121,17 +132,23 @@ public class DisplayElementCommentsActivity extends AppCompatActivity
 
                     if (cinephile.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
+                        // display the thumbnail of the cinephile who posted the comment,it depends on gender
                         String thumbnail = "";
                         if (cinephile.getSexe().equals("Femme"))
                             thumbnail = "https://icon-icons.com/icons2/582/PNG/512/girl_icon-icons.com_55043.png";
                         else thumbnail = "https://cdn1.iconfinder.com/data/icons/user-pictures/100/boy-512.png";
 
                         elementsCommentsReference = DCinephiliaInstance.getReference(element_genre);
+
+                        // create a new comment
                         Comment comment = new Comment(comment_content,new Date(), cinephile.getFirstname() +
                                 " " + cinephile.getLastname().toUpperCase()  , movie_id, thumbnail);
+
+                        // push the comment to the reference of comments on firebase
                         elementsCommentsReference.child(String.valueOf(movie_id)).push().setValue(comment);
                     }
                 }
+                // diplay the comment on the listview
                 DisplayComments(element_genre, movie_id);
             }
 
@@ -140,6 +157,11 @@ public class DisplayElementCommentsActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Display a comment on the listview
+     * @param element_genre
+     * @param element_id
+     */
     public void DisplayComments(String element_genre, int element_id)
     {
         elementsCommentsReference = DCinephiliaInstance.getReference(element_genre+"/"+String.valueOf(element_id));

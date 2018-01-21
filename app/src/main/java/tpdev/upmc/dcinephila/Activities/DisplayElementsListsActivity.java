@@ -30,6 +30,11 @@ import tpdev.upmc.dcinephila.Adapaters.ElementListAdapter;
 import tpdev.upmc.dcinephila.Beans.ElementList;
 import tpdev.upmc.dcinephila.R;
 
+/**
+ * This activity allows the cinephile to consult the content of a list (movies and shows)
+ * Elements can be deleted from the list
+ */
+
 public class DisplayElementsListsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private List<ElementList> myLists;
